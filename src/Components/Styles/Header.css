@@ -1,0 +1,9 @@
+.header {
+    background-color: #BA0F16 !important;
+}
+
+.header-title {
+    margin-left: 300px;
+    display: inline-block;
+    justify-content: center;
+}
