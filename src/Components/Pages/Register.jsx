@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 import prometeo from "../../Images/prometeo.jpg";
 
-export default function Login() {
+export default function Register() {
   return (
     <Container>
       <Row>
@@ -20,14 +20,13 @@ export default function Login() {
         <Col>
           <Jumbotron fluid>
             <Container>
-              <h1>INICIAR SESIÓN</h1>
+              <h1>REGISTRO</h1>
               <p>
-                Es necesario el inicio de sesión para acceder a las
-                convocatorias y demás opciones.
+                Registrate para poder acceder y aplicar a convocatorias.
               </p>
               <br></br>
-              <Button href="/register" variant="outline-danger" block>
-              No tienes cuenta? REGISTRATE AQUI
+              <Button href="/login" variant="outline-danger" block>
+              Ya tienes cuenta? INGRESA AQUI
             </Button>
             </Container>
           </Jumbotron>
@@ -36,16 +35,24 @@ export default function Login() {
               <Form.Label>Correo electrónico</Form.Label>
               <Form.Control type="email" placeholder="ejemplo@udem.co" />
               <Form.Text className="text-muted">
-                Correo con el que realizó el registro.
+                Correo donde llegarán notificaciones y con el que iniciarás sesión.
               </Form.Text>
+            </Form.Group>
+            <Form.Group controlId="formBasicEmail">
+              <Form.Label>Nombre</Form.Label>
+              <Form.Control type="text" placeholder="Nombre" />
             </Form.Group>
 
             <Form.Group controlId="formBasicPassword">
               <Form.Label>Contraseña</Form.Label>
               <Form.Control type="password" placeholder="Contraseña" />
             </Form.Group>
+            <Form.Group controlId="formBasicPassword">
+              <Form.Label>Confirmar contraseña</Form.Label>
+              <Form.Control type="password" placeholder="Confimar contraseña" />
+            </Form.Group>
             <Button variant="danger" type="submit" block>
-              INGRESAR
+              REGISTRARSE
             </Button>
           </Form>
         </Col>
