@@ -23,7 +23,7 @@ const Header = () => (
     <h1 className="header-font header-title">Sistema de convocatorias</h1>
     <Navbar.Collapse className="justify-content-end">
       <Nav className="justify-content-end header-font">
-        <NavLink to="/" className="nav-link">
+        <NavLink to="/home" className="nav-link">
           HOME
         </NavLink>
         <NavLink to="/login" className="nav-link">
