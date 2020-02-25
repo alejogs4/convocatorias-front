@@ -12,6 +12,7 @@ import udem from "../../Images/udem.jpg";
 
 var sectionStyle = {
   width: "100%",
+  height: "100%",
   backgroundImage: `url(${udem})`,
   backgroundRepeat: "no-repeat",
   backgroundAttachment: "fixed",
@@ -23,7 +24,15 @@ export default function Register() {
     <div style={sectionStyle}>
       <Row>
         <Col></Col>
-        <Col sm={9} md={7} lg={5} mx="auto">
+        <Col
+          sm={6}
+          md={5}
+          lg={5}
+          mx="auto"
+          style={{
+            padding: "70px 0"
+          }}
+        >
           <Container>
             <Card my={5}>
               <Card.Body>
