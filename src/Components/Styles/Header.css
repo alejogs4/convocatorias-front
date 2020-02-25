@@ -1,9 +1,17 @@
-.header {
-    background-color: #BA0F16 !important;
+.header-color {
+  background-color: #ba0f16;
+}
+
+.header-font {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
 .header-title {
-    margin-left: 300px;
-    display: inline-block;
-    justify-content: center;
+  font-size: 28px;
+  color: white;
+  margin: 0 auto;
+  justify-content: center;
+  float:none;
+  display: inline-block;
+  text-align: center;
 }
