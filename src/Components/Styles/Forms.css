@@ -1,0 +1,24 @@
+.curriculum {
+    margin: 20px auto;
+    display: block;
+    justify-content: center;
+}
+
+.labels {
+    font-weight: bold;
+}
+
+.labels-2 {
+    font-style: italic;
+}
+
+.studies {
+    border-radius: 25px;
+    padding: 25px;
+    border-style: solid;
+    border-color: gray;
+}
+
+.flag-select img {
+    position: inherit !important;
+}

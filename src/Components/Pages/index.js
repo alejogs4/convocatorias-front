@@ -3,11 +3,12 @@ import React from "react";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 
 // components
+
 import Login from './Login';
 import Home from './Home';
 import Register from './Register';
 import Header from "../Global/Header";
-
+import CurriculumRegister from "./CurriculumRegister";
 
 function Pages() {
   return (
@@ -16,6 +17,7 @@ function Pages() {
       <Switch>
         <Route exact path="/home" component={Home} />
         <Route exact path="/login" component={Login} />
+        <Route exact path="/curriculum" component={CurriculumRegister} />
         <Route exact path="/register" component={Register} />
       </Switch>
     </Router>
