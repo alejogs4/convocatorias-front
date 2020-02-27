@@ -1,16 +1,18 @@
-import React from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Form,
-  Alert,
-  Card
-} from "react-bootstrap";
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Alert from "react-bootstrap/Alert";
+import Card from "react-bootstrap/Card";
+
 import prometeo from "../../Images/prometeo.jpg";
 
-var sectionStyle = {
+let sectionStyle = {
   width: "100%",
   height: "100%",
   backgroundImage: `url(${prometeo})`,
@@ -19,12 +21,29 @@ var sectionStyle = {
   backgroundSize: "cover"
 };
 
-export default function Login() {
+const Login = () => {
+  const [formLogin, setFormLogin] = useState({
+    email: "",
+    password: ""
+  });
+
+  const handleChange = e => {
+    setFormLogin({
+      ...formLogin,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log(formLogin);
+  };
+
   return (
     <div style={sectionStyle}>
       <Container>
         <Row>
-          <Col></Col>
+          <Col />
           <Col
             sm={6}
             md={5}
@@ -40,14 +59,22 @@ export default function Login() {
                 <Card.Text>
                   <Alert variant="danger">
                     NO tienes cuenta?
-                    <Alert.Link href="/register"> REGISTRATE AQUI</Alert.Link>.
+                    <Alert.Link as={NavLink} to="/register">
+                      {" "}
+                      REGISTRATE AQUI
+                    </Alert.Link>
+                    .
                   </Alert>
-                  <Form>
+                  <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="formBasicEmail">
                       <Form.Label>Correo electrónico</Form.Label>
                       <Form.Control
+                        name="email"
+                        onChange={handleChange}
+                        value={formLogin.email}
                         type="email"
                         placeholder="ejemplo@udem.co"
+                        required
                       />
                       <Form.Text className="text-muted">
                         Correo con el que realizó el registro.
@@ -56,7 +83,14 @@ export default function Login() {
 
                     <Form.Group controlId="formBasicPassword">
                       <Form.Label>Contraseña</Form.Label>
-                      <Form.Control type="password" placeholder="Contraseña" />
+                      <Form.Control
+                        name="password"
+                        onChange={handleChange}
+                        value={formLogin.password}
+                        type="password"
+                        placeholder="Contraseña"
+                        required
+                      />
                     </Form.Group>
                     <Button variant="danger" type="submit" block>
                       INGRESAR
@@ -66,9 +100,11 @@ export default function Login() {
               </Card.Body>
             </Card>
           </Col>
-          <Col></Col>
+          <Col />
         </Row>
       </Container>
     </div>
   );
-}
+};
+
+export default Login;
