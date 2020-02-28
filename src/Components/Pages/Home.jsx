@@ -42,7 +42,8 @@ function Home() {
                 <Card.Title><h1>Sistema de convocatorias</h1></Card.Title>
                 <Card.Text className="text-justify">
                   Este es un sistema desarrollado para el programa de Ingeniería de Sistemas de la Universidad de Medellín 
-                  con el fin de proveer un portal donde el Jefe de programa puede gestionar las convocatorias para docentes del programa.
+                  con el fin de proveer un portal donde el Jefe de programa puede gestionar las convocatorias para docentes del programa y los usuarios
+                  externos puedan proporcionar sus datos de Hoja de Vida y aplicar a convocatorias abiertas.
                 </Card.Text>
                 <Button className="mr-5" variant="danger" as={NavLink} to="/curriculum">Registrar Hoja de Vida</Button>
                 <Button variant="outline-danger" as={NavLink} to="/login">Ingresar al sistema</Button>
