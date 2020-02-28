@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactFlagsSelect from 'react-flags-select';
 
 // https://www.npmjs.com/package/react-flags-select
@@ -12,6 +12,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 import { getCountryDisplayName } from '../../utils/countries';
+import { useUser } from '../../state/user';
 
 const INITIAL_FORM_STATE = {
   lastnames: '',
@@ -53,6 +54,17 @@ const CurriculumRegister = ({ history }) => {
   const [studiesDone, setStudiesDone] = useState([]);
   const [experiences, setExperiences] = useState([]);
 
+  const user = useUser();
+
+  useEffect(() => {
+    setFormCurriculum((c) => ({
+      ...c,
+      names: user.name,
+      lastnames: user.lastname,
+      email: user.email,
+    }));
+  }, [user]);
+
   const handleChangeCurriculum = (e) => {
     setFormCurriculum({
       ...formCurriculum,
@@ -91,6 +103,10 @@ const CurriculumRegister = ({ history }) => {
     const experiencesTemp = experiences;
     experiencesTemp.push(formExperiences);
     setExperiences(experiencesTemp);
+    setFormCurriculum({
+      ...formCurriculum,
+      experiences: experiences,
+    });
     setFormExperiences({
       program: '',
       subjects: '',
@@ -105,6 +121,10 @@ const CurriculumRegister = ({ history }) => {
     const studiesTemp = studiesDone;
     studiesTemp.push(formStudies);
     setStudiesDone(studiesTemp);
+    setFormCurriculum({
+      ...formCurriculum,
+      studiesDone: studiesDone,
+    });
     setFormStudies({
       degree: 'Doctorado',
       title: '',
@@ -130,7 +150,11 @@ const CurriculumRegister = ({ history }) => {
 
   return (
     <Container>
-      <Form onSubmit={(e) => handleSubmitCurriculum(e)} className="curriculum">
+      <Form
+        id="formCurriculum"
+        onSubmit={(e) => handleSubmitCurriculum(e)}
+        className="curriculum"
+      >
         <Form.Row>
           <Form.Group as={Col} lg>
             <Form.Label className="labels">Apellidos</Form.Label>
@@ -340,11 +364,7 @@ const CurriculumRegister = ({ history }) => {
         </Form.Row>
         <hr />
         <Form.Label className="labels">Estudios realizados</Form.Label>
-        <Form
-          id="formStudies"
-          onSubmit={(e) => handleSubmitStudies(e)}
-          className="studies"
-        >
+        <Form id="formStudies" className="studies">
           <Form.Row>
             <Form.Group as={Col} lg>
               <Form.Label className="labels-2">Nivel de formación</Form.Label>
@@ -416,25 +436,21 @@ const CurriculumRegister = ({ history }) => {
               />
             </Form.Group>
           </Form.Row>
-          <Button variant="danger" type="submit" form="formStudies">
+          <Button variant="danger" onClick={(e) => handleSubmitStudies(e)}>
             Agregar
           </Button>
           <p>{JSON.stringify(studiesDone)}</p>
         </Form>
         <hr />
         <Form.Label className="labels">Experencia docente</Form.Label>
-        <Form
-          id="experiencesForm"
-          onSubmit={(e) => handleSubmitExperiences(e)}
-          className="studies"
-        >
+        <Form id="experiencesForm" className="studies">
           <Form.Row>
             <Form.Group as={Col} lg>
               <Form.Label className="labels-2">Programa Académico</Form.Label>
               <Form.Control
                 name="program"
                 id="program"
-                onChange={(e) => handleChangeExperiences(e)}
+                onChange={handleChangeExperiences}
                 value={formExperiences.program}
                 type="text"
                 placeholder="Programa Académico"
@@ -447,7 +463,7 @@ const CurriculumRegister = ({ history }) => {
               <Form.Control
                 name="subjects"
                 id="subjects"
-                onChange={(e) => handleChangeExperiences(e)}
+                onChange={handleChangeExperiences}
                 value={formExperiences.subjects}
                 type="text"
                 placeholder="Asignaturas dicatadas"
@@ -460,7 +476,7 @@ const CurriculumRegister = ({ history }) => {
               <Form.Control
                 name="institution"
                 id="institution"
-                onChange={(e) => handleChangeExperiences(e)}
+                onChange={handleChangeExperiences}
                 value={formExperiences.institution}
                 type="text"
                 placeholder="Institución y lugar"
@@ -473,7 +489,7 @@ const CurriculumRegister = ({ history }) => {
               <Form.Control
                 name="sinceDate"
                 id="sinceExperience"
-                onChange={(e) => handleChangeExperiences(e)}
+                onChange={handleChangeExperiences}
                 value={formExperiences.sinceDate}
                 type="date"
                 required
@@ -485,7 +501,7 @@ const CurriculumRegister = ({ history }) => {
               <Form.Control
                 name="toDate"
                 id="toExperience"
-                onChange={(e) => handleChangeExperiences(e)}
+                onChange={handleChangeExperiences}
                 value={formExperiences.toDate}
                 type="date"
                 required
@@ -493,13 +509,19 @@ const CurriculumRegister = ({ history }) => {
               />
             </Form.Group>
           </Form.Row>
-          <Button type="submit" variant="danger" form="experiencesForm">
+          <Button variant="danger" onClick={handleSubmitExperiences}>
             Agregar
           </Button>
           <p>{JSON.stringify(experiences)}</p>
         </Form>
         <hr />
-        <Button type="submit" variant="success" size="lg" block>
+        <Button
+          form="formCurriculum"
+          type="submit"
+          variant="success"
+          size="lg"
+          block
+        >
           Registrar hoja de vida
         </Button>
       </Form>

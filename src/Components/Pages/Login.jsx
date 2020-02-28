@@ -13,6 +13,7 @@ import Card from 'react-bootstrap/Card';
 import prometeo from '../../Images/prometeo.jpg';
 import useForm from '../Hooks/useForm';
 import auth from '../../utils/petitions/auth.petitions';
+import { useUserDispatch, LOGIN } from '../../state/user';
 
 const sectionStyle = {
   width: '100%',
@@ -34,6 +35,7 @@ const Login = () => {
 
   const form = useForm();
   const history = useHistory();
+  const userDispatch = useUserDispatch();
 
   useEffect(() => {
     setCameFromRegistry(window.location.href.includes('?success'));
@@ -51,15 +53,20 @@ const Login = () => {
     form.updatePetitionState({ loading: true, error: null });
     setFormLogin(INITIAL_LOGIN_STATE);
 
-    auth.login(formLogin)
+    auth
+      .login(formLogin)
       .then(({ user, token }) => {
         form.updatePetitionState({ loading: false });
         localStorage.setItem('udemuser', JSON.stringify(user));
         localStorage.setItem('token', token);
-        history.push('/');
+        userDispatch({ type: LOGIN, payload: user });
+        history.push('/home');
       })
       .catch(() => {
-        form.updatePetitionState({ loading: false, error: 'El usuario o la contraseña son incorrectas.' });
+        form.updatePetitionState({
+          loading: false,
+          error: 'El usuario o la contraseña son incorrectas.',
+        });
       });
   };
 
@@ -81,7 +88,7 @@ const Login = () => {
               <Card.Body>
                 <Card.Title className="text-center">INICIAR SESIÓN</Card.Title>
                 <Card.Text>
-                  <Alert variant={cameFromSignip ? 'success' : 'danger'}>
+                  <Alert variant={cameFromSignip ? 'success' : 'info'}>
                     {!cameFromSignip ? (
                       <>
                         NO tienes cuenta?
@@ -91,7 +98,9 @@ const Login = () => {
                         </Alert.Link>
                         .
                       </>
-                    ) : <>Te has registrado con exito</>}
+                    ) : (
+                      <>Te has registrado con exito</>
+                    )}
                   </Alert>
                   <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="formBasicEmail">
@@ -120,13 +129,18 @@ const Login = () => {
                         required
                       />
                     </Form.Group>
-                    <Button variant="danger" type="submit" block className="form-margin">
-                      {form.petitionState.loading ? 'Ingresando...' : 'Ingresar'}
+                    <Button
+                      variant="danger"
+                      type="submit"
+                      block
+                      className="form-margin"
+                    >
+                      {form.petitionState.loading
+                        ? 'Ingresando...'
+                        : 'Ingresar'}
                     </Button>
                     {form.petitionState.error && (
-                      <Alert variant="danger">
-                        {form.petitionState.error}
-                      </Alert>
+                      <Alert variant="danger">{form.petitionState.error}</Alert>
                     )}
                   </Form>
                 </Card.Text>

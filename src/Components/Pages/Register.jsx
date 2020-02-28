@@ -85,7 +85,7 @@ const Register = () => {
               <Card.Body>
                 <Card.Title className="text-center">REGISTRO</Card.Title>
                 <Card.Text>
-                  <Alert variant="danger">
+                  <Alert variant="info">
                     Ya tienes cuenta?
                     <Alert.Link as={NavLink} to="/login">
                       {' '}
