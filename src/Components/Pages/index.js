@@ -1,14 +1,14 @@
 // packages
-import React from "react";
-import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
+import React from 'react';
+import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 
 // components
 
 import Login from './Login';
 import Home from './Home';
 import Register from './Register';
-import Header from "../Global/Header";
-import CurriculumRegister from "./CurriculumRegister";
+import Header from '../Global/Header';
+import CurriculumRegister from './CurriculumRegister';
 
 function Pages() {
   return (

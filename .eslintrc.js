@@ -1,8 +1,10 @@
 module.exports = {
-  "extends": "airbnb",
+  "extends": ["airbnb"],
+  "plugins": ["prettier"],
   "rules": {
     "react/jsx-filename-extension": "off",
     "no-undef": "off",
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "import/prefer-default-export": "off"
   }
 };
