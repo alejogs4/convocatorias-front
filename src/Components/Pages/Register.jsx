@@ -1,54 +1,72 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState } from 'react';
+import { NavLink, useHistory } from 'react-router-dom';
 
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Alert from "react-bootstrap/Alert";
-import Card from "react-bootstrap/Card";
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
+import Card from 'react-bootstrap/Card';
 
-import udem from "../../Images/udem.jpg";
+import udem from '../../Images/udem.jpg';
+import auth from '../../utils/petitions/auth.petitions';
+import useForm from '../Hooks/useForm';
 
-let sectionStyle = {
-  width: "100%",
-  height: "100%",
+const sectionStyle = {
+  width: '100%',
+  height: '100%',
   backgroundImage: `url(${udem})`,
-  backgroundRepeat: "no-repeat",
-  backgroundAttachment: "fixed",
-  backgroundSize: "cover"
+  backgroundRepeat: 'no-repeat',
+  backgroundAttachment: 'fixed',
+  backgroundSize: 'cover',
+};
+
+const INITIAL_SIGNUP_STATE = {
+  email: '',
+  name: '',
+  lastname: '',
+  password: '',
 };
 
 const Register = () => {
-  const [formRegister, setFormRegister] = useState({
-    email: "",
-    name: "",
-    password: ""
-  });
+  const [formRegister, setFormRegister] = useState(INITIAL_SIGNUP_STATE);
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const form = useForm();
+  const history = useHistory();
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setFormRegister({
       ...formRegister,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleConfirmPassword = e => {
+  const handleConfirmPassword = (e) => {
     setConfirmPassword(e.target.value);
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    form.updatePetitionState({ loading: true, error: null });
+
     if (formRegister.password !== confirmPassword) {
-      alert("No coinciden las contraseñas!");
-    } else {
-      console.log(formRegister);
+      form.updatePetitionState({ loading: false, error: 'Ambas contraseñas deben de coincidir' });
+      return;
     }
+
+    auth.signup(formRegister)
+      .then(() => {
+        form.resetFormState();
+        history.push('/login?success');
+      })
+      .catch(() => {
+        form.updatePetitionState({ loading: false, error: 'Error registrando al usuario' });
+      });
   };
+
   return (
     <div style={sectionStyle}>
       <Row>
@@ -59,7 +77,7 @@ const Register = () => {
           lg={5}
           mx="auto"
           style={{
-            padding: "70px 0"
+            padding: '70px 0',
           }}
         >
           <Container>
@@ -70,7 +88,7 @@ const Register = () => {
                   <Alert variant="danger">
                     Ya tienes cuenta?
                     <Alert.Link as={NavLink} to="/login">
-                      {" "}
+                      {' '}
                       INGRESA AQUI.
                     </Alert.Link>
                   </Alert>
@@ -102,6 +120,18 @@ const Register = () => {
                       />
                     </Form.Group>
 
+                    <Form.Group controlId="formBasicEmail">
+                      <Form.Label>Apellidos</Form.Label>
+                      <Form.Control
+                        name="lastname"
+                        onChange={handleChange}
+                        value={formRegister.lastname}
+                        type="text"
+                        placeholder="Apellido"
+                        required
+                      />
+                    </Form.Group>
+
                     <Form.Group controlId="formBasicPassword">
                       <Form.Label>Contraseña</Form.Label>
                       <Form.Control
@@ -124,9 +154,14 @@ const Register = () => {
                         required
                       />
                     </Form.Group>
-                    <Button variant="danger" type="submit" block>
-                      REGISTRARSE
+                    <Button variant="danger" type="submit" block className="form-margin">
+                      {form.petitionState.loading ? 'Registrando...' : 'Registrarse'}
                     </Button>
+                    {form.petitionState.error && (
+                      <Alert variant="danger">
+                        {form.petitionState.error}
+                      </Alert>
+                    )}
                   </Form>
                 </Card.Text>
               </Card.Body>

@@ -22,3 +22,7 @@
 .flag-select img {
     position: inherit !important;
 }
+
+.form-margin {
+  margin-bottom: 1em;
+}

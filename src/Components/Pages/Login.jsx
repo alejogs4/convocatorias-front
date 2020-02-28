@@ -1,42 +1,66 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { NavLink, useHistory } from 'react-router-dom';
 
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Alert from "react-bootstrap/Alert";
-import Card from "react-bootstrap/Card";
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
+import Card from 'react-bootstrap/Card';
 
-import prometeo from "../../Images/prometeo.jpg";
+import prometeo from '../../Images/prometeo.jpg';
+import useForm from '../Hooks/useForm';
+import auth from '../../utils/petitions/auth.petitions';
 
-let sectionStyle = {
-  width: "100%",
-  height: "100%",
+const sectionStyle = {
+  width: '100%',
+  height: '100%',
   backgroundImage: `url(${prometeo})`,
-  backgroundRepeat: "no-repeat",
-  backgroundAttachment: "fixed",
-  backgroundSize: "cover"
+  backgroundRepeat: 'no-repeat',
+  backgroundAttachment: 'fixed',
+  backgroundSize: 'cover',
+};
+
+const INITIAL_LOGIN_STATE = {
+  email: '',
+  password: '',
 };
 
 const Login = () => {
-  const [formLogin, setFormLogin] = useState({
-    email: "",
-    password: ""
-  });
+  const [formLogin, setFormLogin] = useState(INITIAL_LOGIN_STATE);
+  const [cameFromSignip, setCameFromRegistry] = useState(false);
 
-  const handleChange = e => {
+  const form = useForm();
+  const history = useHistory();
+
+  useEffect(() => {
+    setCameFromRegistry(window.location.href.includes('?success'));
+  }, []);
+
+  const handleChange = (e) => {
     setFormLogin({
       ...formLogin,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formLogin);
+    form.updatePetitionState({ loading: true, error: null });
+    setFormLogin(INITIAL_LOGIN_STATE);
+
+    auth.login(formLogin)
+      .then(({ user, token }) => {
+        form.updatePetitionState({ loading: false });
+        localStorage.setItem('udemuser', JSON.stringify(user));
+        localStorage.setItem('token', token);
+        history.push('/');
+      })
+      .catch(() => {
+        form.updatePetitionState({ loading: false, error: 'El usuario o la contraseña son incorrectas.' });
+      });
   };
 
   return (
@@ -50,20 +74,24 @@ const Login = () => {
             lg={5}
             mx="auto"
             style={{
-              padding: "70px 0"
+              padding: '70px 0',
             }}
           >
             <Card my={5}>
               <Card.Body>
                 <Card.Title className="text-center">INICIAR SESIÓN</Card.Title>
                 <Card.Text>
-                  <Alert variant="danger">
-                    NO tienes cuenta?
-                    <Alert.Link as={NavLink} to="/register">
-                      {" "}
-                      REGISTRATE AQUI
-                    </Alert.Link>
-                    .
+                  <Alert variant={cameFromSignip ? 'success' : 'danger'}>
+                    {!cameFromSignip ? (
+                      <>
+                        NO tienes cuenta?
+                        <Alert.Link as={NavLink} to="/register">
+                          {' '}
+                          REGISTRATE AQUI
+                        </Alert.Link>
+                        .
+                      </>
+                    ) : <>Te has registrado con exito</>}
                   </Alert>
                   <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="formBasicEmail">
@@ -92,9 +120,14 @@ const Login = () => {
                         required
                       />
                     </Form.Group>
-                    <Button variant="danger" type="submit" block>
-                      INGRESAR
+                    <Button variant="danger" type="submit" block className="form-margin">
+                      {form.petitionState.loading ? 'Ingresando...' : 'Ingresar'}
                     </Button>
+                    {form.petitionState.error && (
+                      <Alert variant="danger">
+                        {form.petitionState.error}
+                      </Alert>
+                    )}
                   </Form>
                 </Card.Text>
               </Card.Body>
