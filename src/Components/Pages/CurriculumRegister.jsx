@@ -92,10 +92,14 @@ const CurriculumRegister = ({ history }) => {
       teaching_experiences,
     }).then((curriculum) => {
       setFormCurriculum(INITIAL_FORM_STATE);
-      curriculumForm.resetFormState();
       curriculumDispacth({ type: REGISTER_CV, payload: curriculum });
 
-      history.push('/home');
+      curriculumForm.resetFormState();
+      curriculumForm.setSuccesfulPetition();
+
+      setTimeout(() => {
+        history.push('/home');
+      }, 3000);
     })
       .catch(() => {
         curriculumForm.updatePetitionState({ loading: false, error: 'Error registrando hoja de vida' });
@@ -115,7 +119,7 @@ const CurriculumRegister = ({ history }) => {
     setFormExperiences(INITIAL_EXPERIENCES_STATE);
   };
 
-  const handleSubmitStudies = (e) => {
+  const handleSubmitStudies = () => {
     const studiesTemp = [...studies, formStudies];
 
     setStudiesDone(studiesTemp);
@@ -441,6 +445,7 @@ const CurriculumRegister = ({ history }) => {
         </Button>
       </Form>
       {curriculumForm.petitionState.error && <Alert variant="danger">{curriculumForm.petitionState.error}</Alert>}
+      {curriculumForm.petitionState.success && <Alert variant="success">Hoja de vida registrada con exito</Alert>}
     </Container>
   );
 };

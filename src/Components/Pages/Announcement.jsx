@@ -1,62 +1,62 @@
-import React, { useState, ReactDOM } from "react";
+import React, { useState } from 'react';
 
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 // import Alert from "react-bootstrap/Alert";
-import Table from "react-bootstrap/Table";
-import Card from "react-bootstrap/Card";
+import Table from 'react-bootstrap/Table';
+import Card from 'react-bootstrap/Card';
 
 const INITIAL_ANNOUNCEMENT_STATE = {
-  name: "",
-  description: "",
-  from: "",
-  to: "",
-  profilesList: []
+  name: '',
+  description: '',
+  from: '',
+  to: '',
+  profilesList: [],
 };
 
 const Announcement = () => {
   const [formAnnouncement, setFormAnnouncement] = useState(
-    INITIAL_ANNOUNCEMENT_STATE
+    INITIAL_ANNOUNCEMENT_STATE,
   );
   const [formProfiles, setFormProfiles] = useState({
-    profile: ""
+    profile: '',
   });
   const [profilesList, setProfilesList] = useState([]);
 
-  const handleChangeProfiles = e => {
+  const handleChangeProfiles = (e) => {
     setFormProfiles({
       ...formProfiles,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmitProfiles = e => {
+  const handleSubmitProfiles = (e) => {
     e.preventDefault();
     const profilesTemp = [...profilesList, formProfiles];
 
     setProfilesList(profilesTemp);
     setFormAnnouncement({
       ...formAnnouncement,
-      profilesList: profilesTemp
+      profilesList: profilesTemp,
     });
     setFormProfiles({
-      profile: ""
+      profile: '',
     });
     console.log(profilesList);
   };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setFormAnnouncement({
       ...formAnnouncement,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setFormAnnouncement(INITIAL_ANNOUNCEMENT_STATE);
   };
@@ -72,7 +72,7 @@ const Announcement = () => {
             lg={6}
             mx="auto"
             style={{
-              padding: "70px 0"
+              padding: '70px 0',
             }}
           >
             <Card my={5}>
@@ -161,7 +161,7 @@ const Announcement = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {profilesList.map(profile => (
+                            {profilesList.map((profile) => (
                               <tr>
                                 <td>{profile}</td>
                               </tr>
@@ -170,7 +170,7 @@ const Announcement = () => {
                         </Table>
                       )}
                     </Form>
-                    <br/>
+                    <br />
                     <Button
                       variant="danger"
                       type="submit"

@@ -20,6 +20,13 @@ function userReducer(state, action) {
 function UserProvider({ children }) {
   const [state, dispatch] = React.useReducer(userReducer, {});
 
+  React.useEffect(() => {
+    const user = localStorage.udemuser;
+    if (user) {
+      dispatch({ type: LOGIN, payload: JSON.parse(user) });
+    }
+  }, []);
+
   return (
     <UserContext.Provider value={state}>
       <UserContextDispatch.Provider value={dispatch}>
