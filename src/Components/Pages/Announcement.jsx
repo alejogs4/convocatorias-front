@@ -1,4 +1,4 @@
-import React, { useState, ReactDOM } from "react";
+import React, { useState } from "react";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -46,19 +46,24 @@ const Announcement = () => {
     setFormProfiles({
       profile: ""
     });
-    console.log(profilesList);
   };
 
   const handleChange = e => {
     setFormAnnouncement({
-      ...formAnnouncement,
+      ...setFormAnnouncement,
       [e.target.name]: e.target.value
     });
   };
 
   const handleSubmit = e => {
     e.preventDefault();
+    setFormAnnouncement({
+      ...setFormAnnouncement,
+      profilesList
+    });
+    console.log(formAnnouncement);
     setFormAnnouncement(INITIAL_ANNOUNCEMENT_STATE);
+    setProfilesList([]);
   };
 
   return (
@@ -151,26 +156,26 @@ const Announcement = () => {
                         </Form.Group>
                       </Form.Row>
                       <Button variant="danger" onClick={handleSubmitProfiles}>
-                        Agregar
+                        Agregar perfil
                       </Button>
                       {Array.isArray(profilesList) && profilesList.length > 0 && (
                         <Table responsive>
                           <thead>
                             <tr>
-                              <th>Perfil</th>
+                              <th>Lista de perfiles</th>
                             </tr>
                           </thead>
                           <tbody>
                             {profilesList.map(profile => (
                               <tr>
-                                <td>{profile}</td>
+                                <td>{profile.profile}</td>
                               </tr>
                             ))}
                           </tbody>
                         </Table>
                       )}
                     </Form>
-                    <br/>
+                    <br />
                     <Button
                       variant="danger"
                       type="submit"
