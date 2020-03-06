@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ReactFlagsSelect from 'react-flags-select';
 
 // https://www.npmjs.com/package/react-flags-select
@@ -11,60 +11,54 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
+import { Alert } from 'react-bootstrap';
 import { getCountryDisplayName } from '../../utils/countries';
-import { useUser } from '../../state/user';
-import { Table } from 'react-bootstrap';
+import curriculum from '../../utils/petitions/curriculum.petitions';
+import useForm from '../Hooks/useForm';
+import TeachingExperiencesTable from '../Molecules/Tables/TeachingExperiencesTable';
+import StudiesTable from '../Molecules/Tables/StudiesTable';
+import { useCurriculumDispatch, REGISTER_CV } from '../../state/curriculum';
 
 const INITIAL_FORM_STATE = {
-  lastnames: '',
-  names: '',
-  idType: '',
-  idNum: '',
-  nationality: 'Colombia',
+  dni: '',
+  country: 'Colombia',
   gender: '',
   birthday: '',
-  birthplace: 'Colombia',
-  maritalStatus: 'Soltero/a',
-  personalAddress: '',
-  phone: '',
-  cellphone: '',
-  email: '',
-  studiesDone: [],
-  experiences: [],
+  hometown: 'Colombia',
+  civil_status: 'Soltero/a',
+  personal_address: '',
+  home_phone: '',
+  cellphone_phone: '',
+  studies: [],
+  teaching_experiences: [],
+};
+
+const INITIAL_STUDIES_STATE = {
+  degree: 'Doctorado',
+  degree_topic: '',
+  begin_date: '',
+  final_date: '',
+  title_level_id: 2,
+};
+
+const INITIAL_EXPERIENCES_STATE = {
+  academic_program: '',
+  subjects: '',
+  organization: '',
+  begin_date: '',
+  final_date: '',
 };
 
 const CurriculumRegister = ({ history }) => {
   const [formCurriculum, setFormCurriculum] = useState(INITIAL_FORM_STATE);
+  const [formStudies, setFormStudies] = useState(INITIAL_STUDIES_STATE);
+  const [formExperiences, setFormExperiences] = useState(INITIAL_EXPERIENCES_STATE);
 
-  const [formStudies, setFormStudies] = useState({
-    degree: 'Doctorado',
-    title: '',
-    area: '',
-    sinceDate: '',
-    toDate: '',
-  });
+  const [studies, setStudiesDone] = useState([]);
+  const [teaching_experiences, setExperiences] = useState([]);
 
-  const [formExperiences, setFormExperiences] = useState({
-    program: '',
-    subjects: '',
-    institution: '',
-    sinceDate: '',
-    toDate: '',
-  });
-
-  const [studiesDone, setStudiesDone] = useState([]);
-  const [experiences, setExperiences] = useState([]);
-
-  const user = useUser();
-
-  useEffect(() => {
-    setFormCurriculum((c) => ({
-      ...c,
-      names: user.name,
-      lastnames: user.lastname,
-      email: user.email,
-    }));
-  }, [user]);
+  const curriculumForm = useForm();
+  const curriculumDispacth = useCurriculumDispatch();
 
   const handleChangeCurriculum = (e) => {
     setFormCurriculum({
@@ -89,64 +83,54 @@ const CurriculumRegister = ({ history }) => {
 
   const handleSubmitCurriculum = (e) => {
     e.preventDefault();
-    setFormCurriculum({
+
+    curriculumForm.updatePetitionState({ loading: true });
+
+    curriculum.registerCurriculum({
       ...formCurriculum,
-      studiesDone,
-      experiences,
-    });
-    console.log(formCurriculum);
-    setFormCurriculum(INITIAL_FORM_STATE);
-    history.push('/home');
+      studies,
+      teaching_experiences,
+    }).then((curriculum) => {
+      setFormCurriculum(INITIAL_FORM_STATE);
+      curriculumForm.resetFormState();
+      curriculumDispacth({ type: REGISTER_CV, payload: curriculum });
+
+      history.push('/home');
+    })
+      .catch(() => {
+        curriculumForm.updatePetitionState({ loading: false, error: 'Error registrando hoja de vida' });
+      });
   };
 
   const handleSubmitExperiences = (e) => {
     e.preventDefault();
 
-    const newExperiencesTemp = [...experiences, formExperiences];
+    const newExperiencesTemp = [...teaching_experiences, formExperiences];
     setExperiences(newExperiencesTemp);
 
     setFormCurriculum({
       ...formCurriculum,
-      experiences: newExperiencesTemp,
+      teaching_experiences: newExperiencesTemp,
     });
-    setFormExperiences({
-      program: '',
-      subjects: '',
-      institution: '',
-      sinceDate: '',
-      toDate: '',
-    });
+    setFormExperiences(INITIAL_EXPERIENCES_STATE);
   };
 
   const handleSubmitStudies = (e) => {
-    e.preventDefault();
-    const studiesTemp = [...studiesDone, formStudies];
+    const studiesTemp = [...studies, formStudies];
 
     setStudiesDone(studiesTemp);
     setFormCurriculum({
       ...formCurriculum,
-      studiesDone: studiesTemp,
+      studies: studiesTemp,
     });
-    setFormStudies({
-      degree: 'Doctorado',
-      title: '',
-      area: '',
-      sinceDate: '',
-      toDate: '',
-    });
-    console.log(studiesDone);
+
+    setFormStudies(INITIAL_STUDIES_STATE);
   };
 
-  const handleSelectFlagNationality = (countryCode) => {
+  const handleNationalitySelectors = (field) => (countryCode) => {
     setFormCurriculum({
       ...formCurriculum,
-      nationality: getCountryDisplayName(countryCode),
-    });
-  };
-  const handleSelectFlagBirthplace = (countryCode) => {
-    setFormCurriculum({
-      ...formCurriculum,
-      birthplace: getCountryDisplayName(countryCode),
+      [field]: getCountryDisplayName(countryCode),
     });
   };
 
@@ -154,74 +138,15 @@ const CurriculumRegister = ({ history }) => {
     <Container>
       <Form
         id="formCurriculum"
-        onSubmit={(e) => handleSubmitCurriculum(e)}
+        onSubmit={handleSubmitCurriculum}
         className="curriculum"
       >
         <Form.Row>
           <Form.Group as={Col} lg>
-            <Form.Label className="labels">Apellidos</Form.Label>
-            <Form.Control
-              id="lastnames"
-              name="lastnames"
-              onChange={handleChangeCurriculum}
-              value={formCurriculum.lastnames}
-              type="text"
-              placeholder="Apellidos"
-              required
-              autocomplete="off"
-            />
-          </Form.Group>
-          <Form.Group as={Col} lg>
-            <Form.Label className="labels">Nombres</Form.Label>
-            <Form.Control
-              id="names"
-              name="names"
-              onChange={handleChangeCurriculum}
-              value={formCurriculum.names}
-              type="text"
-              placeholder="Nombres"
-              required
-              autocomplete="off"
-            />
-          </Form.Group>
-        </Form.Row>
-        <Form.Row>
-          <Form.Group as={Col} lg>
-            <Form.Label className="labels">Identificación</Form.Label>
-            <Form.Check
-              custom
-              onChange={handleChangeCurriculum}
-              value="C.C"
-              type="radio"
-              label="C.C"
-              name="idType"
-              id="ccRadio"
-              required
-            />
-            <Form.Check
-              custom
-              name="idType"
-              onChange={handleChangeCurriculum}
-              value="C. Ext."
-              type="radio"
-              label="C. Ext."
-              id="cextRadio"
-            />
-            <Form.Check
-              custom
-              name="idType"
-              onChange={handleChangeCurriculum}
-              value="Pas."
-              type="radio"
-              label="Pas."
-              id="pasRadio"
-            />
-          </Form.Group>
-          <Form.Group as={Col} lg>
             <Form.Label className="labels">Número Identificación</Form.Label>
             <Form.Control
               id="idNum"
-              name="idNum"
+              name="dni"
               onChange={handleChangeCurriculum}
               value={formCurriculum.idNum}
               type="text"
@@ -235,8 +160,8 @@ const CurriculumRegister = ({ history }) => {
             <div>
               <ReactFlagsSelect
                 defaultCountry="CO"
-                name="nationality"
-                onSelect={handleSelectFlagNationality}
+                name="country"
+                onSelect={handleNationalitySelectors('country')}
                 searchable="true"
               />
             </div>
@@ -246,9 +171,9 @@ const CurriculumRegister = ({ history }) => {
             <Form.Check
               custom
               type="radio"
-              label="M."
+              label="M"
               onChange={handleChangeCurriculum}
-              value="M."
+              value="M"
               name="gender"
               id="mRadio"
               required
@@ -257,8 +182,8 @@ const CurriculumRegister = ({ history }) => {
               custom
               type="radio"
               onChange={handleChangeCurriculum}
-              value="F."
-              label="F."
+              value="F"
+              label="F"
               name="gender"
               id="fRadio"
             />
@@ -283,8 +208,8 @@ const CurriculumRegister = ({ history }) => {
               <ReactFlagsSelect
                 defaultCountry="CO"
                 searchable="true"
-                name="nationality"
-                onSelect={handleSelectFlagBirthplace}
+                name="hometown"
+                onSelect={handleNationalitySelectors('hometown')}
               />
             </div>
           </Form.Group>
@@ -292,7 +217,7 @@ const CurriculumRegister = ({ history }) => {
             <Form.Label className="labels">Estado Civil</Form.Label>
             <Form.Control
               as="select"
-              name="maritalStatus"
+              name="civil_status"
               value={formCurriculum.maritalStatus}
               onChange={handleChangeCurriculum}
             >
@@ -315,7 +240,7 @@ const CurriculumRegister = ({ history }) => {
             <Form.Label className="labels">Dirección personal</Form.Label>
             <Form.Control
               id="address"
-              name="personalAddress"
+              name="personal_address"
               onChange={handleChangeCurriculum}
               value={formCurriculum.personalAddress}
               type="text"
@@ -328,10 +253,10 @@ const CurriculumRegister = ({ history }) => {
             <Form.Label className="labels">Teléfono fijo</Form.Label>
             <Form.Control
               id="phone"
-              name="phone"
+              name="home_phone"
               onChange={handleChangeCurriculum}
               value={formCurriculum.phone}
-              type="text"
+              type="number"
               placeholder="Teléfono fijo"
               required
               autocomplete="off"
@@ -341,24 +266,11 @@ const CurriculumRegister = ({ history }) => {
             <Form.Label className="labels">Teléfono celular</Form.Label>
             <Form.Control
               id="cellphone"
-              name="cellphone"
+              name="cellphone_phone"
               onChange={handleChangeCurriculum}
               value={formCurriculum.cellphone}
-              type="text"
+              type="number"
               placeholder="Teléfono celular"
-              required
-              autocomplete="off"
-            />
-          </Form.Group>
-          <Form.Group as={Col} lg>
-            <Form.Label className="labels">E-mail</Form.Label>
-            <Form.Control
-              id="email"
-              name="email"
-              onChange={handleChangeCurriculum}
-              value={formCurriculum.email}
-              type="email"
-              placeholder="E-mail"
               required
               autocomplete="off"
             />
@@ -372,28 +284,27 @@ const CurriculumRegister = ({ history }) => {
               <Form.Label className="labels-2">Nivel de formación</Form.Label>
               <Form.Control
                 as="select"
-                name="degree"
-                value={formStudies.degree}
+                name="title_level_id"
                 onChange={handleChangeStudies}
               >
-                <option name="degree" value="Doctorado" id="phd">
+                <option name="degree" value={2} id="phd">
                   Doctorado
                 </option>
-                <option name="degree" value="Maestría" id="master">
+                {/* <option name="degree" value="Maestría" id="master">
                   Maestría
                 </option>
                 <option name="degree" value="Pregrado" id="undergraduate">
                   Pregrado
-                </option>
+                </option> */}
               </Form.Control>
             </Form.Group>
             <Form.Group as={Col} lg>
               <Form.Label className="labels-2">Título obtenido</Form.Label>
               <Form.Control
-                name="title"
+                name="degree"
                 id="title"
                 onChange={handleChangeStudies}
-                value={formStudies.title}
+                value={formStudies.degree}
                 type="text"
                 placeholder="Título"
                 required
@@ -403,10 +314,10 @@ const CurriculumRegister = ({ history }) => {
             <Form.Group as={Col} lg>
               <Form.Label className="labels-2">Área de estudios</Form.Label>
               <Form.Control
-                name="area"
+                name="degree_topic"
                 id="studyArea"
                 onChange={handleChangeStudies}
-                value={formStudies.area}
+                value={formStudies.degree_topic}
                 type="text"
                 placeholder="Área de estudio"
                 required
@@ -416,10 +327,10 @@ const CurriculumRegister = ({ history }) => {
             <Form.Group as={Col} lg>
               <Form.Label className="labels-2">Duración (Desde)</Form.Label>
               <Form.Control
-                name="sinceDate"
+                name="begin_date"
                 id="since"
                 onChange={handleChangeStudies}
-                value={formStudies.sinceDate}
+                value={formStudies.begin_date}
                 type="date"
                 required
                 placeholder="Desde ..."
@@ -428,10 +339,10 @@ const CurriculumRegister = ({ history }) => {
             <Form.Group as={Col} lg>
               <Form.Label className="labels-2">Duración (Hasta)</Form.Label>
               <Form.Control
-                name="toDate"
+                name="final_date"
                 id="to"
                 onChange={handleChangeStudies}
-                value={formStudies.toDate}
+                value={formStudies.final_date}
                 type="date"
                 required
                 placeholder="Hasta ..."
@@ -441,7 +352,7 @@ const CurriculumRegister = ({ history }) => {
           <Button variant="danger" onClick={handleSubmitStudies}>
             Agregar
           </Button>
-          <p>{JSON.stringify(studiesDone)}</p>
+          {Array.isArray(studies) && studies.length > 0 && <StudiesTable studies={studies} />}
         </Form>
         <hr />
         <Form.Label className="labels">Experencia docente</Form.Label>
@@ -450,10 +361,10 @@ const CurriculumRegister = ({ history }) => {
             <Form.Group as={Col} lg>
               <Form.Label className="labels-2">Programa Académico</Form.Label>
               <Form.Control
-                name="program"
+                name="academic_program"
                 id="program"
                 onChange={handleChangeExperiences}
-                value={formExperiences.program}
+                value={formExperiences.academic_program}
                 type="text"
                 placeholder="Programa Académico"
                 required
@@ -476,10 +387,10 @@ const CurriculumRegister = ({ history }) => {
             <Form.Group as={Col} lg>
               <Form.Label className="labels-2">Institución y lugar</Form.Label>
               <Form.Control
-                name="institution"
+                name="organization"
                 id="institution"
                 onChange={handleChangeExperiences}
-                value={formExperiences.institution}
+                value={formExperiences.organization}
                 type="text"
                 placeholder="Institución y lugar"
                 required
@@ -489,10 +400,10 @@ const CurriculumRegister = ({ history }) => {
             <Form.Group as={Col} lg>
               <Form.Label className="labels-2">Duración (Desde)</Form.Label>
               <Form.Control
-                name="sinceDate"
+                name="begin_date"
                 id="sinceExperience"
                 onChange={handleChangeExperiences}
-                value={formExperiences.sinceDate}
+                value={formExperiences.begin_date}
                 type="date"
                 required
                 placeholder="Desde ..."
@@ -501,10 +412,10 @@ const CurriculumRegister = ({ history }) => {
             <Form.Group as={Col} lg>
               <Form.Label className="labels-2">Duración (Hasta)</Form.Label>
               <Form.Control
-                name="toDate"
+                name="final_date"
                 id="toExperience"
                 onChange={handleChangeExperiences}
-                value={formExperiences.toDate}
+                value={formExperiences.final_date}
                 type="date"
                 required
                 placeholder="Hasta ..."
@@ -514,29 +425,8 @@ const CurriculumRegister = ({ history }) => {
           <Button variant="danger" onClick={handleSubmitExperiences}>
             Agregar
           </Button>
-          {Array.isArray(experiences) && experiences.length > 0 && (
-            <Table responsive>
-              <thead>
-                <tr>
-                  <th>Programa</th>
-                  <th>Materias</th>
-                  <th>Institucion</th>
-                  <th>Desde</th>
-                  <th>Hasta</th>
-                </tr>
-              </thead>
-              <tbody>
-                {experiences.map(experience => (
-                  <tr>
-                    <td>{experience.program}</td>
-                    <td>{experience.subjects}</td>
-                    <td>{experience.institution}</td>
-                    <td>{experience.sinceDate}</td>
-                    <td>{experience.toDate}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+          {Array.isArray(teaching_experiences) && teaching_experiences.length > 0 && (
+            <TeachingExperiencesTable teachingExperiences={teaching_experiences} />
           )}
         </Form>
         <hr />
@@ -547,9 +437,10 @@ const CurriculumRegister = ({ history }) => {
           size="lg"
           block
         >
-          Registrar hoja de vida
+          {curriculumForm.petitionState.loading ? 'Registrando...' : 'Registrar hoja de vida'}
         </Button>
       </Form>
+      {curriculumForm.petitionState.error && <Alert variant="danger">{curriculumForm.petitionState.error}</Alert>}
     </Container>
   );
 };
