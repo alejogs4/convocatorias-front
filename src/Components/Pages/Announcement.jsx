@@ -13,9 +13,10 @@ import Card from "react-bootstrap/Card";
 const INITIAL_ANNOUNCEMENT_STATE = {
   name: "",
   description: "",
-  from: "",
-  to: "",
-  profilesList: []
+  type: "",
+  begin_date: "",
+  finish_date: "",
+  profiles: []
 };
 
 const Announcement = () => {
@@ -23,9 +24,10 @@ const Announcement = () => {
     INITIAL_ANNOUNCEMENT_STATE
   );
   const [formProfiles, setFormProfiles] = useState({
-    profile: ""
+    name: "",
+    description: ""
   });
-  const [profilesList, setProfilesList] = useState([]);
+  const [profiles, setProfiles] = useState([]);
 
   const handleChangeProfiles = e => {
     setFormProfiles({
@@ -36,16 +38,18 @@ const Announcement = () => {
 
   const handleSubmitProfiles = e => {
     e.preventDefault();
-    const profilesTemp = [...profilesList, formProfiles];
-
-    setProfilesList(profilesTemp);
-    setFormAnnouncement({
-      ...formAnnouncement,
-      profilesList: profilesTemp
-    });
-    setFormProfiles({
-      profile: ""
-    });
+    if (formProfiles.name !== "") {
+      const profilesTemp = [...profiles, formProfiles];
+      setProfiles(profilesTemp);
+      setFormAnnouncement({
+        ...formAnnouncement,
+        profiles: profilesTemp
+      });
+      setFormProfiles({
+        name: "",
+        description: ""
+      });
+    }
   };
 
   const handleChange = e => {
@@ -55,15 +59,20 @@ const Announcement = () => {
     });
   };
 
+  function deleteProfile(profile) {
+    var temp = profiles.filter(el => el.name !== profile.name);
+    setProfiles(temp);
+  }
+
   const handleSubmit = e => {
     e.preventDefault();
     setFormAnnouncement({
       ...setFormAnnouncement,
-      profilesList
+      profiles
     });
     console.log(formAnnouncement);
     setFormAnnouncement(INITIAL_ANNOUNCEMENT_STATE);
-    setProfilesList([]);
+    setProfiles([]);
   };
 
   return (
@@ -110,16 +119,38 @@ const Announcement = () => {
                         required
                       />
                     </Form.Group>
+                    <Form.Group>
+                      <Form.Label className="labels">Tipo de convocatoria</Form.Label>
+                      <Form.Check
+                        custom
+                        onChange={handleChange}
+                        value="Tiempo completo"
+                        type="radio"
+                        label="Tiempo completo"
+                        name="typeRadio"
+                        id="tcRadio"
+                        required
+                      />
+                      <Form.Check
+                        custom
+                        name="typeRadio"
+                        onChange={handleChange}
+                        value="Catedra"
+                        type="radio"
+                        label="Cátedra"
+                        id="tcCatedra"
+                      />
+                    </Form.Group>
                     <Form.Row>
                       <Form.Group as={Col} lg>
                         <Form.Label className="labels">
                           Fecha de inicio
                         </Form.Label>
                         <Form.Control
-                          id="from"
-                          name="from"
+                          id="begin_date"
+                          name="begin_date"
                           onChange={handleChange}
-                          value={formAnnouncement.from}
+                          value={formAnnouncement.begin_date}
                           type="date"
                           placeholder="Inicio de convocatoria"
                           required
@@ -140,35 +171,58 @@ const Announcement = () => {
                         />
                       </Form.Group>
                     </Form.Row>
-
-                    <Form id="formProfiles">
+                    <Form id="formProfiles" className="studies">
+                      <Form.Label className="labels-2">Perfiles</Form.Label>
                       <Form.Row>
-                        <Form.Group as={Col}>
-                          <Form.Label className="labels-2">Perfiles</Form.Label>
+                        <Form.Group as={Col} lg>
+                          <Form.Label className="labels">Nombre</Form.Label>
                           <Form.Control
-                            name="profile"
+                            name="name"
                             onChange={handleChangeProfiles}
-                            value={formProfiles.profile}
+                            value={formProfiles.name}
                             type="text"
                             required
-                            placeholder="Perfil para la convocatoria"
+                            placeholder="Nombre del perfil"
+                          />
+                          <br />
+                          <Form.Label className="labels">
+                            Descripción
+                          </Form.Label>
+                          <Form.Control
+                            name="description"
+                            onChange={handleChangeProfiles}
+                            value={formProfiles.description}
+                            as="textarea"
+                            rows="3"
+                            required
+                            placeholder="Descripción del perfil"
                           />
                         </Form.Group>
                       </Form.Row>
                       <Button variant="danger" onClick={handleSubmitProfiles}>
                         Agregar perfil
                       </Button>
-                      {Array.isArray(profilesList) && profilesList.length > 0 && (
+                      {Array.isArray(profiles) && profiles.length > 0 && (
                         <Table responsive>
                           <thead>
                             <tr>
                               <th>Lista de perfiles</th>
+                              <th></th>
                             </tr>
                           </thead>
                           <tbody>
-                            {profilesList.map(profile => (
+                            {profiles.map(profile => (
                               <tr>
-                                <td>{profile.profile}</td>
+                                <td>{profile.name}</td>
+                                <td>
+                                  <Button
+                                    size="sm"
+                                    variant="danger"
+                                    onClick={() => deleteProfile(profile)}
+                                  >
+                                    Eliminar
+                                  </Button>
+                                </td>
                               </tr>
                             ))}
                           </tbody>
