@@ -25,7 +25,7 @@ const INITIAL_FORM_STATE = {
   experiences: []
 };
 
-const CurriculumRegisterContainer = ({ history }) => {
+const CurriculumRegister = ({ history }) => {
   const [formCurriculum, setFormCurriculum] = useState(INITIAL_FORM_STATE);
 
   const user = useUser();
@@ -81,4 +81,4 @@ const CurriculumRegisterContainer = ({ history }) => {
   );
 };
 
-export default CurriculumRegisterContainer;
+export default CurriculumRegister;
