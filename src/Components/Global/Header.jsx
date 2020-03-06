@@ -6,7 +6,7 @@ import Nav from "react-bootstrap/Nav";
 
 import "../Styles/Header.css";
 
-import logoUdem from "../../Images/logo_udem.png";
+import logoUdem from "../../images/logo_udem.png";
 import { useUser, useUserDispatch, LOGOUT } from "../../state/user";
 
 const Header = () => {

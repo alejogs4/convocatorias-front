@@ -10,7 +10,7 @@ import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import Card from 'react-bootstrap/Card';
 
-import prometeo from '../../Images/prometeo.jpg';
+import prometeo from '../../images/prometeo.jpg';
 import useForm from '../Hooks/useForm';
 import auth from '../../utils/petitions/auth.petitions';
 import { useUserDispatch, LOGIN } from '../../state/user';

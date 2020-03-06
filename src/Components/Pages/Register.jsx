@@ -10,7 +10,7 @@ import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import Card from 'react-bootstrap/Card';
 
-import udem from '../../Images/udem.jpg';
+import udem from '../../images/udem.jpg';
 import auth from '../../utils/petitions/auth.petitions';
 import useForm from '../Hooks/useForm';
 
