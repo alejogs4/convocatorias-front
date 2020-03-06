@@ -6,9 +6,11 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 
-const StudiesForm = ({formCurriculum, setFormCurriculum}) => {
+const StudiesForm = ({ formCurriculum, setFormCurriculum }) => {
+  const [validated, setValidated] = useState(false);
+
   const [formStudies, setFormStudies] = useState({
-    degree: "Doctorado",
+    degree: "Pregrado",
     title: "",
     area: "",
     sinceDate: "",
@@ -26,25 +28,32 @@ const StudiesForm = ({formCurriculum, setFormCurriculum}) => {
 
   const handleSubmitStudies = e => {
     e.preventDefault();
-    const studiesTemp = [...studiesDone, formStudies];
+    if (Object.keys(formStudies).every(k => formStudies[k] !== "")) {
+      console.log("esta bien");
+      const studiesTemp = [...studiesDone, formStudies];
 
-    setStudiesDone(studiesTemp);
-    setFormCurriculum({
-      ...formCurriculum,
-      studiesDone: studiesTemp
-    });
-    setFormStudies({
-      degree: "Doctorado",
-      title: "",
-      area: "",
-      sinceDate: "",
-      toDate: ""
-    });
-    console.log(studiesDone);
+      setStudiesDone(studiesTemp);
+      setFormCurriculum({
+        ...formCurriculum,
+        studiesDone: studiesTemp
+      });
+      setFormStudies({
+        degree: "Pregrado",
+        title: "",
+        area: "",
+        sinceDate: "",
+        toDate: ""
+      });
+      console.log(studiesDone);
+      setValidated(false);
+    } else {
+      console.log("no esta bien");
+      setValidated(true);
+    }
   };
 
   return (
-    <Form id="formStudies" className="studies">
+    <Form noValidate validated={validated} id="formStudies" className="studies">
       <Form.Row>
         <Form.Group as={Col} lg>
           <Form.Label className="labels-2">Nivel de formación</Form.Label>
@@ -54,19 +63,23 @@ const StudiesForm = ({formCurriculum, setFormCurriculum}) => {
             value={formStudies.degree}
             onChange={handleChangeStudies}
           >
-            <option name="degree" value="Doctorado" id="phd">
-              Doctorado
-            </option>
-            <option name="degree" value="Maestría" id="master">
-              Maestría
+            <option name="degree" value="Pregrado" id="undergraduate">
+              Pregrado
             </option>
             <option name="degree" value="Especialización" id="specialization">
               Especialización
             </option>
-            <option name="degree" value="Pregrado" id="undergraduate">
-              Pregrado
+            <option name="degree" value="Maestría" id="master">
+              Maestría
+            </option>
+            <option name="degree" value="Doctorado" id="phd">
+              Doctorado
             </option>
           </Form.Control>
+          <Form.Control.Feedback>Correcto!</Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">
+            Por favor, selecciona una opción válida
+          </Form.Control.Feedback>
         </Form.Group>
         <Form.Group as={Col} lg>
           <Form.Label className="labels-2">Título obtenido</Form.Label>
@@ -80,6 +93,10 @@ const StudiesForm = ({formCurriculum, setFormCurriculum}) => {
             required
             autocomplete="off"
           />
+          <Form.Control.Feedback>Correcto!</Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">
+            Por favor, ingresa el título obtenido
+          </Form.Control.Feedback>
         </Form.Group>
         <Form.Group as={Col} lg>
           <Form.Label className="labels-2">Área de estudios</Form.Label>
@@ -93,6 +110,10 @@ const StudiesForm = ({formCurriculum, setFormCurriculum}) => {
             required
             autocomplete="off"
           />
+          <Form.Control.Feedback>Correcto!</Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">
+            Por favor, ingresa una área de estudios
+          </Form.Control.Feedback>
         </Form.Group>
         <Form.Group as={Col} lg>
           <Form.Label className="labels-2">Duración (Desde)</Form.Label>
@@ -105,6 +126,10 @@ const StudiesForm = ({formCurriculum, setFormCurriculum}) => {
             required
             placeholder="Desde ..."
           />
+          <Form.Control.Feedback>Correcto!</Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">
+            Por favor, ingresa una fecha de inicio
+          </Form.Control.Feedback>
         </Form.Group>
         <Form.Group as={Col} lg>
           <Form.Label className="labels-2">Duración (Hasta)</Form.Label>
@@ -117,6 +142,10 @@ const StudiesForm = ({formCurriculum, setFormCurriculum}) => {
             required
             placeholder="Hasta ..."
           />
+          <Form.Control.Feedback>Correcto!</Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">
+            Por favor, ingresa una fecha de finalización
+          </Form.Control.Feedback>
         </Form.Group>
       </Form.Row>
       <Button variant="danger" onClick={handleSubmitStudies}>
