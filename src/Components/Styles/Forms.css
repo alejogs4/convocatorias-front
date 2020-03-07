@@ -1,26 +1,25 @@
 .curriculum {
-    margin: 20px auto;
-    display: block;
-    justify-content: center;
+  margin: 20px auto;
+  display: block;
+  justify-content: center;
 }
 
 .labels {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .labels-2 {
-    font-style: italic;
+  font-style: italic;
 }
 
 .studies {
-    border-radius: 25px;
-    padding: 25px;
-    border-style: solid;
-    border-color: gray;
+  border: 2px solid gray;
+  border-radius: 5px;
+  padding: 25px;
 }
 
 .flag-select img {
-    position: inherit !important;
+  position: inherit !important;
 }
 
 .form-margin {

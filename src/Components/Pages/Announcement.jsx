@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 // import Alert from "react-bootstrap/Alert";
-import Table from "react-bootstrap/Table";
-import Card from "react-bootstrap/Card";
+import Table from 'react-bootstrap/Table';
+import Card from 'react-bootstrap/Card';
 
 const INITIAL_ANNOUNCEMENT_STATE = {
   name: "",
@@ -21,7 +21,7 @@ const INITIAL_ANNOUNCEMENT_STATE = {
 
 const Announcement = () => {
   const [formAnnouncement, setFormAnnouncement] = useState(
-    INITIAL_ANNOUNCEMENT_STATE
+    INITIAL_ANNOUNCEMENT_STATE,
   );
   const [formProfiles, setFormProfiles] = useState({
     name: "",
@@ -29,14 +29,14 @@ const Announcement = () => {
   });
   const [profiles, setProfiles] = useState([]);
 
-  const handleChangeProfiles = e => {
+  const handleChangeProfiles = (e) => {
     setFormProfiles({
       ...formProfiles,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmitProfiles = e => {
+  const handleSubmitProfiles = (e) => {
     e.preventDefault();
     if (formProfiles.name !== "") {
       const profilesTemp = [...profiles, formProfiles];
@@ -52,7 +52,7 @@ const Announcement = () => {
     }
   };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setFormAnnouncement({
       ...setFormAnnouncement,
       [e.target.name]: e.target.value
@@ -86,7 +86,7 @@ const Announcement = () => {
             lg={6}
             mx="auto"
             style={{
-              padding: "70px 0"
+              padding: '70px 0',
             }}
           >
             <Card my={5}>
