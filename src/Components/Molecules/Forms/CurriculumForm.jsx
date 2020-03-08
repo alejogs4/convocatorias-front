@@ -1,33 +1,33 @@
-import React from "react";
+import React from 'react';
 
-import Container from "react-bootstrap/Container";
-import Col from "react-bootstrap/Col";
+import Container from 'react-bootstrap/Container';
+import Col from 'react-bootstrap/Col';
 
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Alert from "react-bootstrap/Alert";
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 
-import StudiesForm from "../Forms/StudiesForm";
-import ExperiencesForm from "../Forms/ExperiencesForm";
+import ReactFlagsSelect from 'react-flags-select';
+import StudiesForm from './StudiesForm';
+import ExperiencesForm from './ExperiencesForm';
 
-import { getCountryDisplayName } from "../../../utils/countries";
+import { getCountryDisplayName } from '../../../utils/countries';
 
 // https://www.npmjs.com/package/react-flags-select
-import ReactFlagsSelect from "react-flags-select";
-import "react-flags-select/css/react-flags-select.css";
-import "../../Styles/Forms.css";
+import 'react-flags-select/css/react-flags-select.css';
+import '../../Styles/Forms.css';
 
 const CurriculumForm = ({
   curriculumForm,
   formCurriculum,
   setFormCurriculum,
   onChangeCurriculum,
-  onSubmitCurriculum
+  onSubmitCurriculum,
 }) => {
-  const handleNationalitySelectors = field => countryCode => {
+  const handleNationalitySelectors = (field) => (countryCode) => {
     setFormCurriculum({
       ...formCurriculum,
-      [field]: getCountryDisplayName(countryCode)
+      [field]: getCountryDisplayName(countryCode),
     });
   };
   return (
@@ -57,7 +57,7 @@ const CurriculumForm = ({
               <ReactFlagsSelect
                 defaultCountry="CO"
                 name="country"
-                onSelect={handleNationalitySelectors("country")}
+                onSelect={handleNationalitySelectors('country')}
                 searchable="true"
               />
             </div>
@@ -114,7 +114,7 @@ const CurriculumForm = ({
                 defaultCountry="CO"
                 searchable="true"
                 name="hometown"
-                onSelect={handleNationalitySelectors("hometown")}
+                onSelect={handleNationalitySelectors('hometown')}
               />
             </div>
           </Form.Group>
@@ -204,19 +204,21 @@ const CurriculumForm = ({
               id="checkTerms"
               required
               type="checkbox"
-              label={
+              label={(
                 <>
-                  Acepto los{" "}
+                  Acepto los
+                  {' '}
                   <a
                     href="https://www.udem.edu.co/index.php/categoria-noticias-recientes/3461-proteccion-de-datos-personales-2016"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     términos y condiciones
-                  </a>{" "}
+                  </a>
+                  {' '}
                   de tratamiento de datos y privacidad.
                 </>
-              }
+              )}
               feedback="Debes aceptar los términos y condiciones"
             />
           </Form.Group>
@@ -229,8 +231,8 @@ const CurriculumForm = ({
           block
         >
           {curriculumForm.petitionState.loading
-            ? "Registrando..."
-            : "Registrar hoja de vida"}
+            ? 'Registrando...'
+            : 'Registrar hoja de vida'}
         </Button>
       </Form>
       {curriculumForm.petitionState.error && (

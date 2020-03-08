@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -9,25 +9,35 @@ import Form from 'react-bootstrap/Form';
 // import Alert from "react-bootstrap/Alert";
 import Table from 'react-bootstrap/Table';
 import Card from 'react-bootstrap/Card';
+import withLogin from '../Hoc/withLogin';
+import jobs from '../../utils/petitions/jobs.petitions';
+import { useHistory } from 'react-router-dom';
+import useForm from '../Hooks/useForm';
+import { Alert } from 'react-bootstrap';
 
 const INITIAL_ANNOUNCEMENT_STATE = {
-  name: "",
-  description: "",
-  type: "",
-  begin_date: "",
-  finish_date: "",
-  profiles: []
+  name: '',
+  description: '',
+  job_type_id: 1,
+  begin_date: '',
+  final_date: '',
+  profiles: [],
 };
 
+const INITIAL_FORM_PROFILE = { name: '', description: '' };
+
 const Announcement = () => {
-  const [formAnnouncement, setFormAnnouncement] = useState(
-    INITIAL_ANNOUNCEMENT_STATE,
-  );
-  const [formProfiles, setFormProfiles] = useState({
-    name: "",
-    description: ""
-  });
+  const history = useHistory();
+  const form = useForm();
+
+  const [formAnnouncement, setFormAnnouncement] = useState(INITIAL_ANNOUNCEMENT_STATE);
+  const [formProfiles, setFormProfiles] = useState(INITIAL_FORM_PROFILE);
   const [profiles, setProfiles] = useState([]);
+  const [types, setTypes] = useState([]);
+
+  useEffect(() => {
+    jobs.getTypes().then(setTypes).catch((error) => console.log(error.message));
+  }, []);
 
   const handleChangeProfiles = (e) => {
     setFormProfiles({
@@ -38,41 +48,51 @@ const Announcement = () => {
 
   const handleSubmitProfiles = (e) => {
     e.preventDefault();
-    if (formProfiles.name !== "") {
+
+    if (formProfiles.name) {
       const profilesTemp = [...profiles, formProfiles];
       setProfiles(profilesTemp);
+
       setFormAnnouncement({
         ...formAnnouncement,
-        profiles: profilesTemp
+        profiles: profilesTemp,
       });
-      setFormProfiles({
-        name: "",
-        description: ""
-      });
+
+      setFormProfiles(INITIAL_FORM_PROFILE);
     }
   };
 
   const handleChange = (e) => {
     setFormAnnouncement({
-      ...setFormAnnouncement,
-      [e.target.name]: e.target.value
+      ...formAnnouncement,
+      [e.target.name]: e.target.value,
     });
   };
 
   function deleteProfile(profile) {
-    var temp = profiles.filter(el => el.name !== profile.name);
-    setProfiles(temp);
+    setProfiles(profiles.filter((el) => el.name !== profile.name));
   }
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setFormAnnouncement({
-      ...setFormAnnouncement,
-      profiles
-    });
-    console.log(formAnnouncement);
-    setFormAnnouncement(INITIAL_ANNOUNCEMENT_STATE);
-    setProfiles([]);
+    form.updatePetitionState({ loading: true });
+
+    jobs.createJobOpportunity({ ...formAnnouncement, profiles })
+      .then(() => {
+        setFormAnnouncement(INITIAL_ANNOUNCEMENT_STATE);
+        setProfiles([]);
+        form.updatePetitionState({ loading: false });
+        form.setSuccesfulPetition();
+
+        setTimeout(() => {
+          form.resetFormState();
+          history.push('/');
+        }, 2000);
+      })
+      .catch((error) => {
+        form.updatePetitionState({ loading: false, error: 'Error creando convocatoria' });
+        console.log(error.message);
+      });
   };
 
   return (
@@ -119,28 +139,24 @@ const Announcement = () => {
                         required
                       />
                     </Form.Group>
-                    <Form.Group>
-                      <Form.Label className="labels">Tipo de convocatoria</Form.Label>
-                      <Form.Check
-                        custom
-                        onChange={handleChange}
-                        value="Tiempo completo"
-                        type="radio"
-                        label="Tiempo completo"
-                        name="typeRadio"
-                        id="tcRadio"
-                        required
-                      />
-                      <Form.Check
-                        custom
-                        name="typeRadio"
-                        onChange={handleChange}
-                        value="Catedra"
-                        type="radio"
-                        label="Cátedra"
-                        id="tcCatedra"
-                      />
-                    </Form.Group>
+                    {types.length > 0 && (
+                      <Form.Group>
+                        <Form.Label className="labels">Tipo de convocatoria</Form.Label>
+                        {types.map((type) => (
+                          <Form.Check
+                            key={type.id}
+                            custom
+                            onChange={handleChange}
+                            value={type.id}
+                            type="radio"
+                            label={type.text}
+                            name="job_type_id"
+                            id={type.id}
+                            required
+                          />
+                        ))}
+                      </Form.Group>
+                    )}
                     <Form.Row>
                       <Form.Group as={Col} lg>
                         <Form.Label className="labels">
@@ -162,9 +178,9 @@ const Announcement = () => {
                         </Form.Label>
                         <Form.Control
                           id="to"
-                          name="to"
+                          name="final_date"
                           onChange={handleChange}
-                          value={formAnnouncement.to}
+                          value={formAnnouncement.final_date}
                           type="date"
                           placeholder="Fin de convocatoria"
                           required
@@ -207,11 +223,11 @@ const Announcement = () => {
                           <thead>
                             <tr>
                               <th>Lista de perfiles</th>
-                              <th></th>
+                              <th />
                             </tr>
                           </thead>
                           <tbody>
-                            {profiles.map(profile => (
+                            {profiles.map((profile) => (
                               <tr>
                                 <td>{profile.name}</td>
                                 <td>
@@ -236,9 +252,11 @@ const Announcement = () => {
                       block
                       className="form-margin"
                     >
-                      Crear convocatoria
+                      {!form.petitionState.loading ? 'Crear convocatoria' : 'Creando convocatoria...'}
                     </Button>
                   </Form>
+                  {form.petitionState.error && <Alert variant="danger">{form.petitionState.error}</Alert>}
+                  {form.petitionState.success && <Alert variant="success">Convocatoria creada</Alert>}
                 </Card.Text>
               </Card.Body>
             </Card>
@@ -250,4 +268,4 @@ const Announcement = () => {
   );
 };
 
-export default Announcement;
+export default withLogin(Announcement);

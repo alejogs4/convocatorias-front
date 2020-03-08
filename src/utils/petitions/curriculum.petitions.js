@@ -12,6 +12,11 @@ const curriculum = {
     return curriculumPetitions.post('curriculum', curriculumInfo, { headers: { ...HEADERS, authorization: token } })
       .then((response) => response.data.data);
   },
+  getCurriculum() {
+    const { token } = localStorage;
+    return curriculumPetitions.get('teacher/curriculum', { headers: { ...HEADERS, authorization: token } })
+      .then((response) => response.data.data);
+  },
 };
 
 export default curriculum;
