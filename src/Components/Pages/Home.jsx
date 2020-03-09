@@ -1,21 +1,24 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 
-import Carousel from "react-bootstrap/Carousel";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
+import Carousel from 'react-bootstrap/Carousel';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 
-import prometeo from "../../Images/prometeo.jpg";
-import udem from "../../Images/udem.jpg";
+import prometeo from '../../Images/prometeo.jpg';
+import udem from '../../Images/udem.jpg';
+import { useCurriculum } from '../../state/curriculum';
 
 function Home() {
+  const curriculum = useCurriculum();
+
   return (
     <div
       style={{
-        padding: "30px 0"
+        padding: '30px 0',
       }}
     >
       <Container>
@@ -48,15 +51,19 @@ function Home() {
                   externos puedan proporcionar sus datos de Hoja de Vida y
                   aplicar a convocatorias abiertas.
                 </Card.Text>
-                <Button
-                  className="mr-5"
-                  variant="danger"
-                  as={NavLink}
-                  to="/curriculum"
-                >
-                  Registrar Hoja de Vida
-                </Button>
-                {/* <Button variant="outline-danger" as={NavLink} to="/login">Ingresar al sistema</Button> */}
+                {(!curriculum || !curriculum.id) && (
+                  <Button
+                    className="mr-5"
+                    variant="danger"
+                    as={NavLink}
+                    to="/curriculum"
+                  >
+                    Registrar Hoja de Vida
+                  </Button>
+                )}
+                {/*
+                <Button variant="outline-danger" as={NavLink} to="/login">Ingresar al sistema</Button>
+                */}
               </Card.Body>
             </Card>
           </Col>

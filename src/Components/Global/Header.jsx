@@ -1,31 +1,35 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
 
-import "../Styles/Header.css";
+import '../Styles/Header.css';
 
-import logoUdem from "../../Images/logo_udem.png";
-import { useUser, useUserDispatch, LOGOUT } from "../../state/user";
+import logoUdem from '../../Images/logo_udem.png';
+import { useUser } from '../../state/user';
+import useAuth from '../Hooks/useAuth';
 
 const Header = () => {
+  const auth = useAuth();
   const user = useUser();
-  const userDispatch = useUserDispatch();
 
   return (
     <Navbar className="header-color" variant="dark" expand="lg">
-      <Navbar.Brand>
+      <Navbar.Brand as={NavLink} to="/">
         <img
           alt="logo udem"
           src={logoUdem}
           width="182"
           height="54"
           className="d-inline-block align-top"
-        />{" "}
+        />
+        {' '}
       </Navbar.Brand>
       <Navbar.Toggle />
-      <h1 className="header-font header-title">Sistema de convocatorias</h1>
+      <NavLink to="/">
+        <h1 className="header-font header-title">Sistema de convocatorias</h1>
+      </NavLink>
       <Navbar.Collapse className="justify-content-end">
         <Nav className="justify-content-end header-font">
           {user && user.id && (
@@ -46,10 +50,7 @@ const Header = () => {
             <NavLink
               to="/login"
               className="nav-link"
-              onClick={() => {
-                userDispatch({ type: LOGOUT })
-                localStorage.removeItem('udemuser')
-              }}
+              onClick={auth.logout}
             >
               LOGOUT
             </NavLink>

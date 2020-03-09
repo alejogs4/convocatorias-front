@@ -9,12 +9,14 @@ import Register from './Register';
 import Header from '../Global/Header';
 import CurriculumRegister from './CurriculumRegister';
 import Announcement from './Announcement';
+import Jobs from './Jobs';
 
 function Pages() {
   return (
     <Router>
       <Header />
       <Switch>
+        <Route exact path="/" component={Jobs} />
         <Route exact path="/home" component={Home} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/curriculum" component={CurriculumRegister} />

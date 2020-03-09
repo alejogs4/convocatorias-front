@@ -60,7 +60,7 @@ const Login = () => {
         localStorage.setItem('udemuser', JSON.stringify(user));
         localStorage.setItem('token', token);
         userDispatch({ type: LOGIN, payload: user });
-        history.push('/home');
+        history.push('/');
       })
       .catch(() => {
         form.updatePetitionState({

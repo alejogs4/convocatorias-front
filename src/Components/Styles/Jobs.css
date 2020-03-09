@@ -1,0 +1,10 @@
+.jobs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+}
