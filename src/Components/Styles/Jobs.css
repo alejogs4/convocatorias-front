@@ -2,9 +2,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 20px;
 }
 
 .sticky {
+  margin-top: 20px;
   position: sticky;
   top: 0;
 }

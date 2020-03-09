@@ -11,6 +11,7 @@ import Button from 'react-bootstrap/Button';
 import prometeo from '../../Images/prometeo.jpg';
 import udem from '../../Images/udem.jpg';
 import { useCurriculum } from '../../state/curriculum';
+import withLogin from '../Hoc/withLogin';
 
 function Home() {
   const curriculum = useCurriculum();
@@ -61,9 +62,7 @@ function Home() {
                     Registrar Hoja de Vida
                   </Button>
                 )}
-                {/*
-                <Button variant="outline-danger" as={NavLink} to="/login">Ingresar al sistema</Button>
-                */}
+                <Button className="mr-5" variant="info" as={NavLink} to="/">Convocatorias</Button>
               </Card.Body>
             </Card>
           </Col>
@@ -73,4 +72,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default withLogin(Home);
