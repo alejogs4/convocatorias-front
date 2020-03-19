@@ -17,6 +17,9 @@ const curriculum = {
     return curriculumPetitions.get('teacher/curriculum', { headers: { ...HEADERS, authorization: token } })
       .then((response) => response.data.data);
   },
+  getCurriculumLevels() {
+    return curriculumPetitions.get('teacher/levels').then((response) => response.data.data);
+  },
 };
 
 export default curriculum;

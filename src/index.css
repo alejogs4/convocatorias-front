@@ -23,5 +23,10 @@ body {
 
 .margin-bt {
   display: block;
+  width: 100%;
   margin-bottom: var(--default-margin);
+}
+
+.first-letter-uppercase::first-letter {
+  text-transform: uppercase;
 }

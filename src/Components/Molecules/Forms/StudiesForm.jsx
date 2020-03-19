@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Col from "react-bootstrap/Col";
 
@@ -6,9 +6,10 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 import StudiesTable from "../Tables/StudiesTable";
+import curriculum from "../../../utils/petitions/curriculum.petitions";
 
 const INITIAL_STUDIES_STATE = {
-  degree: "Doctorado",
+  degree: "",
   degree_topic: "",
   begin_date: "",
   final_date: "",
@@ -21,6 +22,11 @@ const StudiesForm = ({ formCurriculum, setFormCurriculum }) => {
   const [formStudies, setFormStudies] = useState(INITIAL_STUDIES_STATE);
 
   const [studies, setStudiesDone] = useState([]);
+  const [levels, setLevels] = useState([]);
+
+  useEffect(() => {
+    curriculum.getCurriculumLevels().then((data) => setLevels(data.levels));
+  }, []);
 
   const handleChangeStudies = e => {
     setFormStudies({
@@ -58,15 +64,11 @@ const StudiesForm = ({ formCurriculum, setFormCurriculum }) => {
             name="title_level_id"
             onChange={handleChangeStudies}
           >
-            <option name="degree" value={2} id="phd">
-              Doctorado
-            </option>
-            {/* <option name="degree" value="Maestría" id="master">
-                  Maestría
-                </option>
-                <option name="degree" value="Pregrado" id="undergraduate">
-                  Pregrado
-                </option> */}
+            {levels.map((level) => (
+              <option name="degree" value={level.id} id="phd">
+                {level.text}
+              </option>
+            ))}
           </Form.Control>
           <Form.Control.Feedback>Correcto!</Form.Control.Feedback>
           <Form.Control.Feedback type="invalid">
