@@ -11,6 +11,9 @@ import withLogin from '../Hoc/withLogin';
 
 const INITIAL_FORM_STATE = {
   dni: '',
+  dni_type: '',
+  professional_card: '',
+  military_card: '',
   country: 'Colombia',
   gender: '',
   birthday: '',

@@ -52,6 +52,67 @@ const CurriculumForm = ({
             />
           </Form.Group>
           <Form.Group as={Col} lg>
+            <Form.Label className="labels">Tipo de identificación</Form.Label>
+            <Form.Check
+              custom
+              type="radio"
+              label="Cédula"
+              onChange={onChangeCurriculum}
+              value="Cedula"
+              name="dni_type"
+              id="mRadio-cedula"
+              required
+            />
+            <Form.Check
+              custom
+              type="radio"
+              label="Pasaporte"
+              onChange={onChangeCurriculum}
+              value="Pasaporte"
+              name="dni_type"
+              id="mRadio-passport"
+              required
+            />
+            <Form.Check
+              custom
+              type="radio"
+              label="Cédula extranjera"
+              onChange={onChangeCurriculum}
+              value="Cedula extranjera"
+              name="dni_type"
+              id="mRadio-foreigner"
+              required
+            />
+          </Form.Group>
+        </Form.Row>
+        <Form.Row>
+          <Form.Group as={Col} lg>
+            <Form.Label className="labels">Libreta militar</Form.Label>
+            <Form.Control
+              id="military-card"
+              name="military_card"
+              onChange={onChangeCurriculum}
+              value={formCurriculum.military_card}
+              type="text"
+              placeholder="Libreta militar"
+              required
+              autocomplete="off"
+            />
+          </Form.Group>
+          <Form.Group as={Col} lg>
+            <Form.Label className="labels">Tarjeta profesional</Form.Label>
+            <Form.Control
+              id="professional-card"
+              name="professional_card"
+              onChange={onChangeCurriculum}
+              value={formCurriculum.professional_card}
+              type="text"
+              placeholder="Tarjeta profesional"
+              required
+              autocomplete="off"
+            />
+          </Form.Group>
+          <Form.Group as={Col} lg>
             <Form.Label className="labels">Nacionalidad</Form.Label>
             <div>
               <ReactFlagsSelect
