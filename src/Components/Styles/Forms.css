@@ -8,6 +8,14 @@
   font-weight: bold;
 }
 
+.title-duration {
+  font-weight: bold;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .labels-2 {
   font-style: italic;
 }

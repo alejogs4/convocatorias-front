@@ -4,20 +4,25 @@ import { NavLink } from 'react-router-dom';
 import useAuth from '../Hooks/useAuth';
 
 function UserInformation({ user }) {
-  const auth = useAuth()
+  const auth = useAuth();
+
+  const getUserTitle = () => {
+    if (user.is_boss) return 'Jefe del programa'
+    if (user.is_program) return 'Coordinador del programa'
+    return 'Aspirante'
+  }
 
   return (
-    <section className="sticky">
-      <h2 className="margin-bt">Usuario</h2>
-      <Card>
+    <>
+      <Card as="section" className="sticky">
         <Card.Body>
-          <Card.Title>{user.name} {user.lastname}</Card.Title>
+          <Card.Title className="first-letter-uppercase">{user.name} {user.lastname}</Card.Title>
           <Card.Text><strong>Correo: </strong>{user.email}</Card.Text>
           <Card.Link as={NavLink} to="/login" onClick={auth.logout}>Cerrar sesión</Card.Link>
         </Card.Body>
-        <Card.Footer>{(user.is_boss || user.is_program) ? 'Parte del programa' : 'Usuario del sistema'}</Card.Footer>
+        <Card.Footer>{getUserTitle()}</Card.Footer>
       </Card>
-    </section>
+    </>
   );
 }
 

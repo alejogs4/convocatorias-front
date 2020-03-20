@@ -30,6 +30,14 @@ const CurriculumForm = ({
       [field]: getCountryDisplayName(countryCode),
     });
   };
+
+  const handleMilitaryCardValue = () => {
+    if (formCurriculum.gender === 'Masculino') {
+      return formCurriculum.military_card;
+    }
+    formCurriculum.military_card = '';
+    return '';
+  };
   return (
     <Container>
       <Form
@@ -39,6 +47,39 @@ const CurriculumForm = ({
       >
         <Form.Row>
           <Form.Group as={Col} lg>
+            <Form.Label className="labels">Tipo de identificación</Form.Label>
+            <Form.Check
+              custom
+              type="radio"
+              label="Cédula"
+              onChange={onChangeCurriculum}
+              value="Cedula"
+              name="dni_type"
+              id="mRadio-cedula"
+              required
+            />
+            <Form.Check
+              custom
+              type="radio"
+              label="Pasaporte"
+              onChange={onChangeCurriculum}
+              value="Pasaporte"
+              name="dni_type"
+              id="mRadio-passport"
+              required
+            />
+            <Form.Check
+              custom
+              type="radio"
+              label="Cédula extranjera"
+              onChange={onChangeCurriculum}
+              value="Cedula extranjera"
+              name="dni_type"
+              id="mRadio-foreigner"
+              required
+            />
+          </Form.Group>
+          <Form.Group as={Col} lg>
             <Form.Label className="labels">Número Identificación</Form.Label>
             <Form.Control
               id="idNum"
@@ -47,6 +88,21 @@ const CurriculumForm = ({
               value={formCurriculum.idNum}
               type="text"
               placeholder="Número Identificación"
+              required
+              autocomplete="off"
+            />
+          </Form.Group>
+        </Form.Row>
+        <Form.Row>
+          <Form.Group as={Col} lg>
+            <Form.Label className="labels">Tarjeta profesional</Form.Label>
+            <Form.Control
+              id="professional-card"
+              name="professional_card"
+              onChange={onChangeCurriculum}
+              value={formCurriculum.professional_card}
+              type="text"
+              placeholder="Tarjeta profesional"
               required
               autocomplete="off"
             />
@@ -67,9 +123,9 @@ const CurriculumForm = ({
             <Form.Check
               custom
               type="radio"
-              label="M."
+              label="Masculino"
               onChange={onChangeCurriculum}
-              value="M"
+              value="Masculino"
               name="gender"
               id="mRadio"
               required
@@ -78,8 +134,8 @@ const CurriculumForm = ({
               custom
               type="radio"
               onChange={onChangeCurriculum}
-              value="F"
-              label="F."
+              value="Femenino"
+              label="Femenino"
               name="gender"
               id="fRadio"
             />
@@ -91,6 +147,19 @@ const CurriculumForm = ({
               label="Otro"
               name="gender"
               id="otroRadio"
+            />
+          </Form.Group>
+          <Form.Group as={Col} lg>
+            <Form.Label className="labels">Libreta militar</Form.Label>
+            <Form.Control
+              id="military-card"
+              name="military_card"
+              disabled={formCurriculum.gender !== 'Masculino'}
+              onChange={onChangeCurriculum}
+              value={handleMilitaryCardValue()}
+              type="text"
+              placeholder="Libreta militar"
+              autocomplete="off"
             />
           </Form.Group>
         </Form.Row>
