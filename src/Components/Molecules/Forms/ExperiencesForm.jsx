@@ -7,6 +7,8 @@ import Button from "react-bootstrap/Button";
 
 import TeachingExperiencesTable from "../Tables/TeachingExperiencesTable";
 
+import { handleChangeDates } from "../../../utils/dates";
+
 const INITIAL_EXPERIENCES_STATE = {
   academic_program: "",
   subjects: "",
@@ -50,15 +52,6 @@ const ExperiencesForm = ({ formCurriculum, setFormCurriculum }) => {
     } else {
       setValidated(true);
     }
-  };
-
-  const handleChangeDates = () => {
-    let beginDate = new Date(formExperiences.begin_date.replace(/-/g, '/'));
-    let finalDate = new Date(formExperiences.final_date.replace(/-/g, '/'));
-
-    let diffYears = (finalDate.getFullYear() - beginDate.getFullYear()) * 12;
-
-    return diffYears + finalDate.getMonth() - beginDate.getMonth();
   };
 
   return (
@@ -157,7 +150,7 @@ const ExperiencesForm = ({ formCurriculum, setFormCurriculum }) => {
           <br />
           <Form.Control
             className="title-duration"
-            value={handleChangeDates()}
+            value={handleChangeDates(formExperiences.begin_date, formExperiences.final_date)}
             disabled
           />
         </Form.Group>

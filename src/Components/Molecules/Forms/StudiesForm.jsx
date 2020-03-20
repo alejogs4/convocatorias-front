@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import Col from 'react-bootstrap/Col';
+import Col from "react-bootstrap/Col";
 
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
-import StudiesTable from '../Tables/StudiesTable';
-import curriculum from '../../../utils/petitions/curriculum.petitions';
+import StudiesTable from "../Tables/StudiesTable";
+import curriculum from "../../../utils/petitions/curriculum.petitions";
+import { handleChangeDates } from "../../../utils/dates";
 
 const INITIAL_STUDIES_STATE = {
-  degree: '',
-  degree_topic: '',
-  begin_date: '',
-  final_date: '',
-  title_level_id: 2,
+  degree: "",
+  degree_topic: "",
+  begin_date: "",
+  final_date: "",
+  title_level_id: 2
 };
 
 const StudiesForm = ({ formCurriculum, setFormCurriculum }) => {
@@ -25,21 +26,21 @@ const StudiesForm = ({ formCurriculum, setFormCurriculum }) => {
   const [levels, setLevels] = useState([]);
 
   useEffect(() => {
-    curriculum.getCurriculumLevels().then((data) => setLevels(data.levels));
+    curriculum.getCurriculumLevels().then(data => setLevels(data.levels));
   }, []);
 
-  const handleChangeStudies = (e) => {
+  const handleChangeStudies = e => {
     setFormStudies({
       ...formStudies,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
-  const handleSubmitStudies = (e) => {
+  const handleSubmitStudies = e => {
     e.preventDefault();
 
     const allKeysFilled = Object.keys(formStudies).every(
-      (k) => formStudies[k] !== '',
+      k => formStudies[k] !== ""
     );
 
     if (allKeysFilled) {
@@ -47,22 +48,13 @@ const StudiesForm = ({ formCurriculum, setFormCurriculum }) => {
       setStudiesDone(studiesTemp);
       setFormCurriculum({
         ...formCurriculum,
-        studies: studiesTemp,
+        studies: studiesTemp
       });
       setFormStudies(INITIAL_STUDIES_STATE);
       setValidated(false);
     } else {
       setValidated(true);
     }
-  };
-
-  const handleChangeDates = () => {
-    let beginDate = new Date(formStudies.begin_date.replace(/-/g, '/'));
-    let finalDate = new Date(formStudies.final_date.replace(/-/g, '/'));
-
-    let diffYears = (finalDate.getFullYear() - beginDate.getFullYear()) * 12;
-
-    return diffYears + finalDate.getMonth() - beginDate.getMonth();
   };
 
   return (
@@ -75,7 +67,7 @@ const StudiesForm = ({ formCurriculum, setFormCurriculum }) => {
             name="title_level_id"
             onChange={handleChangeStudies}
           >
-            {levels.map((level) => (
+            {levels.map(level => (
               <option name="degree" value={level.id}>
                 {level.text}
               </option>
@@ -157,7 +149,7 @@ const StudiesForm = ({ formCurriculum, setFormCurriculum }) => {
           <br />
           <Form.Control
             className="title-duration"
-            value={handleChangeDates()}
+            value={handleChangeDates(formStudies.begin_date, formStudies.final_date)}
             disabled
           />
         </Form.Group>
