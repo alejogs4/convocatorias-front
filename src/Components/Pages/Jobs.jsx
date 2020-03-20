@@ -11,7 +11,7 @@ function Jobs() {
 
   return (
     <Container>
-      <h2>Convocatorias abiertas</h2>
+      <h2 className="jobs-header margin-bt">Convocatorias abiertas</h2>
       {(user.is_boss || user.is_program) && <Link to="/announcement">Crear convocatoria</Link>}
       <Row className="home-jobs-container">
         <Col sm={12} lg={!user.id ? 12 : 8}>

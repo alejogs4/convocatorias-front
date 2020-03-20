@@ -6,6 +6,12 @@ import useAuth from '../Hooks/useAuth';
 function UserInformation({ user }) {
   const auth = useAuth();
 
+  const getUserTitle = () => {
+    if (user.is_boss) return 'Jefe del programa'
+    if (user.is_program) return 'Coordinador del programa'
+    return 'Aspirante'
+  }
+
   return (
     <>
       <Card as="section" className="sticky">
@@ -14,7 +20,7 @@ function UserInformation({ user }) {
           <Card.Text><strong>Correo: </strong>{user.email}</Card.Text>
           <Card.Link as={NavLink} to="/login" onClick={auth.logout}>Cerrar sesión</Card.Link>
         </Card.Body>
-        <Card.Footer>{(user.is_boss || user.is_program) ? 'Jefe de programa' : 'Aspirante'}</Card.Footer>
+        <Card.Footer>{getUserTitle()}</Card.Footer>
       </Card>
     </>
   );

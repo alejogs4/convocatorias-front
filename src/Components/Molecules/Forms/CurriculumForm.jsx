@@ -30,6 +30,14 @@ const CurriculumForm = ({
       [field]: getCountryDisplayName(countryCode),
     });
   };
+
+  const handleMilitaryCardValue = () => {
+    if (formCurriculum.gender === 'Masculino') {
+      return formCurriculum.military_card;
+    }
+    formCurriculum.military_card = '';
+    return '';
+  };
   return (
     <Container>
       <Form
@@ -38,19 +46,6 @@ const CurriculumForm = ({
         className="curriculum"
       >
         <Form.Row>
-          <Form.Group as={Col} lg>
-            <Form.Label className="labels">Número Identificación</Form.Label>
-            <Form.Control
-              id="idNum"
-              name="dni"
-              onChange={onChangeCurriculum}
-              value={formCurriculum.idNum}
-              type="text"
-              placeholder="Número Identificación"
-              required
-              autocomplete="off"
-            />
-          </Form.Group>
           <Form.Group as={Col} lg>
             <Form.Label className="labels">Tipo de identificación</Form.Label>
             <Form.Check
@@ -84,21 +79,21 @@ const CurriculumForm = ({
               required
             />
           </Form.Group>
-        </Form.Row>
-        <Form.Row>
           <Form.Group as={Col} lg>
-            <Form.Label className="labels">Libreta militar</Form.Label>
+            <Form.Label className="labels">Número Identificación</Form.Label>
             <Form.Control
-              id="military-card"
-              name="military_card"
+              id="idNum"
+              name="dni"
               onChange={onChangeCurriculum}
-              value={formCurriculum.military_card}
+              value={formCurriculum.idNum}
               type="text"
-              placeholder="Libreta militar"
+              placeholder="Número Identificación"
               required
               autocomplete="off"
             />
           </Form.Group>
+        </Form.Row>
+        <Form.Row>
           <Form.Group as={Col} lg>
             <Form.Label className="labels">Tarjeta profesional</Form.Label>
             <Form.Control
@@ -128,9 +123,9 @@ const CurriculumForm = ({
             <Form.Check
               custom
               type="radio"
-              label="M."
+              label="Masculino"
               onChange={onChangeCurriculum}
-              value="M"
+              value="Masculino"
               name="gender"
               id="mRadio"
               required
@@ -139,8 +134,8 @@ const CurriculumForm = ({
               custom
               type="radio"
               onChange={onChangeCurriculum}
-              value="F"
-              label="F."
+              value="Femenino"
+              label="Femenino"
               name="gender"
               id="fRadio"
             />
@@ -152,6 +147,19 @@ const CurriculumForm = ({
               label="Otro"
               name="gender"
               id="otroRadio"
+            />
+          </Form.Group>
+          <Form.Group as={Col} lg>
+            <Form.Label className="labels">Libreta militar</Form.Label>
+            <Form.Control
+              id="military-card"
+              name="military_card"
+              disabled={formCurriculum.gender !== 'Masculino'}
+              onChange={onChangeCurriculum}
+              value={handleMilitaryCardValue()}
+              type="text"
+              placeholder="Libreta militar"
+              autocomplete="off"
             />
           </Form.Group>
         </Form.Row>

@@ -52,6 +52,15 @@ const ExperiencesForm = ({ formCurriculum, setFormCurriculum }) => {
     }
   };
 
+  const handleChangeDates = () => {
+    let beginDate = new Date(formExperiences.begin_date.replace(/-/g, '/'));
+    let finalDate = new Date(formExperiences.final_date.replace(/-/g, '/'));
+
+    let diffYears = (finalDate.getFullYear() - beginDate.getFullYear()) * 12;
+
+    return diffYears + finalDate.getMonth() - beginDate.getMonth();
+  };
+
   return (
     <Form
       noValidate
@@ -142,6 +151,15 @@ const ExperiencesForm = ({ formCurriculum, setFormCurriculum }) => {
           <Form.Control.Feedback type="invalid">
             Por favor, ingresa la fecha de finalización
           </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group as={Col} lg>
+          <Form.Label className="labels-2">Duración (Meses)</Form.Label>
+          <br />
+          <Form.Control
+            className="title-duration"
+            value={handleChangeDates()}
+            disabled
+          />
         </Form.Group>
       </Form.Row>
       <Button variant="danger" onClick={handleSubmitExperiences}>

@@ -37,6 +37,7 @@ const CurriculumRegister = ({ history }) => {
       ...formCurriculum,
       [e.target.name]: e.target.value,
     });
+    console.log(formCurriculum)
   };
 
   const handleSubmitCurriculum = (e) => {
