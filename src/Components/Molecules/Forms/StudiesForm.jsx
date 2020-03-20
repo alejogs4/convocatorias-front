@@ -65,10 +65,11 @@ const StudiesForm = ({ formCurriculum, setFormCurriculum }) => {
           <Form.Control
             as="select"
             name="title_level_id"
+            value={formStudies.title_level_id}
             onChange={handleChangeStudies}
           >
             {levels.map(level => (
-              <option name="degree" value={level.id}>
+              <option id={level.text} name="degree" value={level.id}>
                 {level.text}
               </option>
             ))}
@@ -158,7 +159,7 @@ const StudiesForm = ({ formCurriculum, setFormCurriculum }) => {
         Agregar
       </Button>
       {Array.isArray(studies) && studies.length > 0 && (
-        <StudiesTable studies={studies} />
+        <StudiesTable levels={levels} studies={studies} />
       )}
     </Form>
   );
