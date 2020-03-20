@@ -81,14 +81,14 @@ const Login = () => {
             lg={5}
             mx="auto"
             style={{
-              padding: '70px 0',
+              padding: '50px 0',
             }}
           >
             <Card my={5}>
               <Card.Body>
                 <Card.Title className="text-center">INICIAR SESIÓN</Card.Title>
                 <Card.Text>
-                  <Alert variant={cameFromSignip ? 'success' : 'info'}>
+                  <Alert variant={cameFromSignip ? 'success' : 'secondary'}>
                     {!cameFromSignip ? (
                       <>
                         NO tienes cuenta?

@@ -1,39 +1,59 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Card, ListGroupItem, ListGroup } from 'react-bootstrap';
-import { differenceInCalendarDays } from 'date-fns';
-import { getNaturalFormat } from '../../utils/dates';
+import React from "react";
+import { NavLink } from "react-router-dom";
+import { Card, Button, Row, Col } from "react-bootstrap";
+import { differenceInCalendarDays } from "date-fns";
+import { getNaturalFormat } from "../../utils/dates";
 
 function JobsCards({ opportunities }) {
   return (
     <div className="jobs-container">
-      {opportunities.length > 0 && opportunities.map((opportunity) => {
-        const creationDate = new Date(opportunity.begin_date);
-        const closeDate = new Date(opportunity.final_date);
+      {opportunities.length > 0 &&
+        opportunities.map(opportunity => {
+          const creationDate = new Date(opportunity.begin_date);
+          const closeDate = new Date(opportunity.final_date);
 
-        return (
-          <Card className="margin-bt" key={opportunity.id}>
-            <Card.Body>
-              <Card.Title>{opportunity.name}</Card.Title>
-              <span className="small margin-bt">{getNaturalFormat(creationDate)}</span>
-              <Card.Text>{opportunity.description}</Card.Text>
-              <Card.Link as={NavLink} to={`/convocatoria/${opportunity.id}`}>Ver mas</Card.Link>
-            </Card.Body>
-            <ListGroup className="list-group-flush">
-              <ListGroupItem>
-                <strong>Cierra el</strong>
-                {' '}
-                {getNaturalFormat(closeDate)}
-                {' '}
-                (
-                {differenceInCalendarDays(closeDate, creationDate)}
-                {' '}
-                dias)
-              </ListGroupItem>
-            </ListGroup>
-          </Card>
-        );
-      })}
+          return (
+            <Card className="margin-bt" key={opportunity.id}>
+              <Card.Body>
+                <Card.Title>
+                  <h3>
+                    <em>{opportunity.name}</em>
+                  </h3>
+                </Card.Title>
+                <Row>
+                  <Col>
+                    <span className="small margin-bt text-muted">
+                      Publicada el {getNaturalFormat(creationDate)}
+                    </span>
+                  </Col>
+                  <Col></Col>
+                </Row>
+                <Card.Text>{opportunity.description}</Card.Text>
+              </Card.Body>
+              <Card.Footer>
+                <Row>
+                  <Col>
+                    <Card.Link
+                      as={NavLink}
+                      to={`/convocatoria/${opportunity.id}`}
+                    >
+                      <Button variant="outline-dark" size="sm">
+                        Más información
+                      </Button>
+                    </Card.Link>
+                  </Col>
+                  <Col>
+                    Cierra el <strong>{getNaturalFormat(closeDate)} </strong>(
+                    <em>
+                      {differenceInCalendarDays(closeDate, creationDate)} dias
+                    </em>
+                    )
+                  </Col>
+                </Row>
+              </Card.Footer>
+            </Card>
+          );
+        })}
     </div>
   );
 }

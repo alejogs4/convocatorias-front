@@ -1,17 +1,17 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
-import Carousel from 'react-bootstrap/Carousel';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
+import Carousel from "react-bootstrap/Carousel";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
 
-import prometeo from '../../Images/prometeo.jpg';
-import udem from '../../Images/udem.jpg';
-import { useCurriculum } from '../../state/curriculum';
-import withLogin from '../Hoc/withLogin';
+import prometeo from "../../Images/prometeo.jpg";
+import udem from "../../Images/udem.jpg";
+import { useCurriculum } from "../../state/curriculum";
+import withLogin from "../Hoc/withLogin";
 
 function Home() {
   const curriculum = useCurriculum();
@@ -19,7 +19,7 @@ function Home() {
   return (
     <div
       style={{
-        padding: '30px 0',
+        padding: "30px 0"
       }}
     >
       <Container>
@@ -53,16 +53,17 @@ function Home() {
                   aplicar a convocatorias abiertas.
                 </Card.Text>
                 {(!curriculum || !curriculum.id) && (
-                  <Button
-                    className="mr-5"
-                    variant="danger"
-                    as={NavLink}
-                    to="/curriculum"
-                  >
-                    Registrar Hoja de Vida
-                  </Button>
+                  <Link to="/curriculum">
+                    <Button className="mr-5" variant="danger">
+                      Registrar Hoja de Vida
+                    </Button>
+                  </Link>
                 )}
-                <Button className="mr-5" variant="info" as={NavLink} to="/">Convocatorias</Button>
+                <Link to="/">
+                  <Button variant="outline-danger">
+                    Ver Convocatorias
+                  </Button>
+                </Link>
               </Card.Body>
             </Card>
           </Col>

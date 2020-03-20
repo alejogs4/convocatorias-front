@@ -77,7 +77,7 @@ const Register = () => {
           lg={5}
           mx="auto"
           style={{
-            padding: '70px 0',
+            padding: '10px 0',
           }}
         >
           <Container>
@@ -85,7 +85,7 @@ const Register = () => {
               <Card.Body>
                 <Card.Title className="text-center">REGISTRO</Card.Title>
                 <Card.Text>
-                  <Alert variant="info">
+                  <Alert variant="secondary">
                     Ya tienes cuenta?
                     <Alert.Link as={NavLink} to="/login">
                       {' '}
