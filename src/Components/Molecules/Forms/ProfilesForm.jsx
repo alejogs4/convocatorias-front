@@ -6,10 +6,11 @@ import Button from 'react-bootstrap/Button';
 
 import ProfilesTable from '../Tables/ProfilesTable';
 
-const INITIAL_FORM_PROFILE = { name: '', description: '' };
+const INITIAL_FORM_PROFILE = { name: '', description: '', area: '' };
 
-const ProfilesForm = ({ formAnnouncement, setFormAnnouncement, profiles, setProfiles }) => {
+const ProfilesForm = ({ formAnnouncement, setFormAnnouncement }) => {
   const [formProfiles, setFormProfiles] = useState(INITIAL_FORM_PROFILE);
+  const [profiles, setProfiles] = useState([]);
 
   const handleChangeProfiles = (e) => {
     setFormProfiles({
@@ -39,7 +40,7 @@ const ProfilesForm = ({ formAnnouncement, setFormAnnouncement, profiles, setProf
   }
 
   return (
-    <Form id="formProfiles" className="studies">
+    <Form id="formProfiles" className="studies" autoComplete="off">
       <Form.Label className="labels-2">Perfiles</Form.Label>
       <Form.Row>
         <Form.Group as={Col} lg>
@@ -53,7 +54,17 @@ const ProfilesForm = ({ formAnnouncement, setFormAnnouncement, profiles, setProf
             placeholder="Nombre del perfil"
           />
           <br />
-          <Form.Label className="labels">Descripción</Form.Label>
+          <Form.Label className="labels">Área</Form.Label>
+          <Form.Control
+            name="area"
+            onChange={handleChangeProfiles}
+            value={formProfiles.area}
+            type="text"
+            required
+            placeholder="Área del perfil"
+          />
+          <br />
+          <Form.Label className="labels">Descripción y requisitos</Form.Label>
           <Form.Control
             name="description"
             onChange={handleChangeProfiles}
@@ -61,7 +72,7 @@ const ProfilesForm = ({ formAnnouncement, setFormAnnouncement, profiles, setProf
             as="textarea"
             rows="3"
             required
-            placeholder="Descripción del perfil"
+            placeholder="Descripción y requisitos del perfil"
           />
         </Form.Group>
       </Form.Row>

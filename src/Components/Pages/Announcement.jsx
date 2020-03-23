@@ -6,6 +6,7 @@ import AnnouncementForm from '../Molecules/Forms/AnnouncementForm';
 import withLogin from '../Hoc/withLogin';
 import jobs from '../../utils/petitions/jobs.petitions';
 import useForm from '../Hooks/useForm';
+import { DEFAULT_STAGES } from '../../utils/stages';
 
 const INITIAL_ANNOUNCEMENT_STATE = {
   name: '',
@@ -14,6 +15,9 @@ const INITIAL_ANNOUNCEMENT_STATE = {
   begin_date: '',
   final_date: '',
   profiles: [],
+  program: 'Ingeniería de Sistemas',
+  requirements: [],
+  stages: DEFAULT_STAGES,
 };
 
 const Announcement = () => {
@@ -23,7 +27,7 @@ const Announcement = () => {
   const [formAnnouncement, setFormAnnouncement] = useState(
     INITIAL_ANNOUNCEMENT_STATE,
   );
-  const [profiles, setProfiles] = useState([]);
+  //const [profiles, setProfiles] = useState([]);
 
   const handleChangeAnnouncement = (e) => {
     setFormAnnouncement({
@@ -37,10 +41,10 @@ const Announcement = () => {
     form.updatePetitionState({ loading: true });
 
     jobs
-      .createJobOpportunity({ ...formAnnouncement, profiles })
+      .createJobOpportunity({ ...formAnnouncement })
       .then(() => {
         setFormAnnouncement(INITIAL_ANNOUNCEMENT_STATE);
-        setProfiles([]);
+        //setProfiles([]);
         form.updatePetitionState({ loading: false });
         form.setSuccesfulPetition();
 
@@ -65,8 +69,8 @@ const Announcement = () => {
       setFormAnnouncement={setFormAnnouncement}
       onChangeAnnouncement={handleChangeAnnouncement}
       onSubmitAnnouncement={handleSubmitAnnouncement}
-      profiles={profiles}
-      setProfiles={setProfiles}
+      // profiles={profiles}
+      // setProfiles={setProfiles}
     />
   );
 };

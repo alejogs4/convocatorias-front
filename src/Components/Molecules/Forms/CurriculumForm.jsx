@@ -44,6 +44,7 @@ const CurriculumForm = ({
         id="formCurriculum"
         onSubmit={onSubmitCurriculum}
         className="curriculum"
+        autoComplete="off"
       >
         <Form.Row>
           <Form.Group as={Col} lg>
@@ -89,7 +90,6 @@ const CurriculumForm = ({
               type="text"
               placeholder="Número Identificación"
               required
-              autocomplete="off"
             />
           </Form.Group>
         </Form.Row>
@@ -104,7 +104,6 @@ const CurriculumForm = ({
               type="text"
               placeholder="Tarjeta profesional"
               required
-              autocomplete="off"
             />
           </Form.Group>
           <Form.Group as={Col} lg>
@@ -114,7 +113,7 @@ const CurriculumForm = ({
                 defaultCountry="CO"
                 name="country"
                 onSelect={handleNationalitySelectors('country')}
-                searchable="true"
+                searchable
               />
             </div>
           </Form.Group>
@@ -159,7 +158,6 @@ const CurriculumForm = ({
               value={handleMilitaryCardValue()}
               type="text"
               placeholder="Libreta militar"
-              autocomplete="off"
             />
           </Form.Group>
         </Form.Row>
@@ -181,7 +179,7 @@ const CurriculumForm = ({
             <div>
               <ReactFlagsSelect
                 defaultCountry="CO"
-                searchable="true"
+                searchable
                 name="hometown"
                 onSelect={handleNationalitySelectors('hometown')}
               />
@@ -223,7 +221,6 @@ const CurriculumForm = ({
               type="text"
               placeholder="Dirección"
               required
-              autocomplete="off"
             />
           </Form.Group>
           <Form.Group as={Col} lg>
@@ -236,7 +233,6 @@ const CurriculumForm = ({
               type="number"
               placeholder="Teléfono fijo"
               required
-              autocomplete="off"
             />
           </Form.Group>
           <Form.Group as={Col} lg>
@@ -249,7 +245,6 @@ const CurriculumForm = ({
               type="number"
               placeholder="Teléfono celular"
               required
-              autocomplete="off"
             />
           </Form.Group>
         </Form.Row>

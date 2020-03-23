@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Alert from 'react-bootstrap/Alert';
-import Card from 'react-bootstrap/Card';
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Alert from "react-bootstrap/Alert";
+import Card from "react-bootstrap/Card";
 
-import ProfilesForm from './ProfilesForm';
+import ProfilesForm from "./ProfilesForm";
+import RequirementsForm from "./RequirementsForm";
+import StagesForm from './StagesForm'
 
-import jobs from '../../../utils/petitions/jobs.petitions';
+import jobs from "../../../utils/petitions/jobs.petitions";
 
 const AnnouncementForm = ({
   form,
@@ -18,17 +20,16 @@ const AnnouncementForm = ({
   setFormAnnouncement,
   onChangeAnnouncement,
   onSubmitAnnouncement,
-  profiles,
-  setProfiles
+  // profiles,
+  // setProfiles
 }) => {
-  
-
   const [types, setTypes] = useState([]);
+
   useEffect(() => {
     jobs
       .getTypes()
       .then(setTypes)
-      .catch((error) => console.log(error.message));
+      .catch(error => console.log(error.message));
   }, []);
 
   return (
@@ -36,12 +37,10 @@ const AnnouncementForm = ({
       <Row>
         <Col />
         <Col
-          sm={12}
-          md={8}
-          lg={6}
+          lg
           mx="auto"
           style={{
-            padding: '70px 0',
+            padding: "70px 0"
           }}
         >
           <Card my={5}>
@@ -50,7 +49,32 @@ const AnnouncementForm = ({
                 CREAR CONVOCATORIA
               </Card.Title>
               <Card.Text>
-                <Form onSubmit={onSubmitAnnouncement}>
+                <Form onSubmit={onSubmitAnnouncement} autoComplete="off">
+                  <Form.Group>
+                    <Form.Label className="labels">Programa</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="announcement_program"
+                      value=""
+                      onChange=""
+                    >
+                      <option
+                        id="ingSistemas"
+                        name="program"
+                        value="Ingeniería de Sistemas"
+                        required
+                      >
+                        Ingeniería de Sistemas
+                      </option>
+                      <option
+                        id="ingCivil"
+                        name="program"
+                        value="Ingeniería Civil"
+                      >
+                        Ingeniería Civil
+                      </option>
+                    </Form.Control>
+                  </Form.Group>
                   <Form.Group>
                     <Form.Label className="labels">Nombre</Form.Label>
                     <Form.Control
@@ -79,7 +103,7 @@ const AnnouncementForm = ({
                       <Form.Label className="labels">
                         Tipo de convocatoria
                       </Form.Label>
-                      {types.map((type) => (
+                      {types.map(type => (
                         <Form.Check
                           key={type.id}
                           custom
@@ -124,11 +148,21 @@ const AnnouncementForm = ({
                       />
                     </Form.Group>
                   </Form.Row>
-                  <ProfilesForm 
+                  <RequirementsForm
                     formAnnouncement={formAnnouncement}
                     setFormAnnouncement={setFormAnnouncement}
-                    profiles={profiles}
-                    setProfiles={setProfiles}
+                  />
+                  <br />
+                  <StagesForm
+                    formAnnouncement={formAnnouncement}
+                    setFormAnnouncement={setFormAnnouncement}
+                  />
+                  <br />
+                  <ProfilesForm
+                    formAnnouncement={formAnnouncement}
+                    setFormAnnouncement={setFormAnnouncement}
+                    // profiles={profiles}
+                    // setProfiles={setProfiles}
                   />
                   <br />
                   <Button
@@ -138,8 +172,8 @@ const AnnouncementForm = ({
                     className="form-margin"
                   >
                     {!form.petitionState.loading
-                      ? 'Crear convocatoria'
-                      : 'Creando convocatoria...'}
+                      ? "Crear convocatoria"
+                      : "Creando convocatoria..."}
                   </Button>
                 </Form>
                 {form.petitionState.error && (
