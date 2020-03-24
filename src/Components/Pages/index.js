@@ -10,6 +10,7 @@ import Header from '../Global/Header';
 import CurriculumRegister from './CurriculumRegister';
 import Announcement from './Announcement';
 import Jobs from './Jobs';
+import JobDetails from './JobDetails';
 
 function Pages() {
   return (
@@ -22,6 +23,7 @@ function Pages() {
         <Route exact path="/curriculum" component={CurriculumRegister} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/announcement" component={Announcement} />
+        <Route exact path="/convocatoria/:id" component={JobDetails} />
       </Switch>
     </Router>
   );
