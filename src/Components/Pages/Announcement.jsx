@@ -38,6 +38,7 @@ const Announcement = () => {
 
   const handleSubmitAnnouncement = (e) => {
     e.preventDefault();
+    console.log(formAnnouncement);
     form.updatePetitionState({ loading: true });
 
     jobs

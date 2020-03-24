@@ -8,6 +8,7 @@ const ProfilesTable = ({ profiles, deleteProfile }) => (
     <thead>
       <tr>
         <th>Perfil</th>
+        <th>Área</th>
         <th>Descripcion</th>
       </tr>
     </thead>
@@ -15,6 +16,7 @@ const ProfilesTable = ({ profiles, deleteProfile }) => (
       {profiles.map((profile) => (
         <tr>
           <td>{profile.name}</td>
+          <td>{profile.area}</td>
           <td>{profile.description}</td>
           <td>
             <Button
