@@ -3,8 +3,11 @@ import { NavLink } from "react-router-dom";
 import { Card, Button, Row, Col } from "react-bootstrap";
 import { differenceInCalendarDays } from "date-fns";
 import { getNaturalFormat } from "../../utils/dates";
+import { useUser } from "../../state/user";
 
 function JobsCards({ opportunities }) {
+  const user = useUser();
+
   return (
     <div className="jobs-container">
       {opportunities.length > 0 &&
@@ -41,6 +44,11 @@ function JobsCards({ opportunities }) {
                         Más información
                       </Button>
                     </Card.Link>
+                    {user.is_boss && (
+                      <Button variant="outline-info" size="sm">
+                        Aspirantes inscritos
+                      </Button>
+                    )}
                   </Col>
                   <Col>
                     Cierra el <strong>{getNaturalFormat(closeDate)} </strong>(

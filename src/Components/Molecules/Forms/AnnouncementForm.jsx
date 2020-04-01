@@ -149,8 +149,8 @@ const AnnouncementForm = ({
                     </Form.Group>
                   </Form.Row>
                   <RequirementsForm
-                    formAnnouncement={formAnnouncement}
-                    setFormAnnouncement={setFormAnnouncement}
+                    form={formAnnouncement}
+                    setForm={setFormAnnouncement}
                   />
                   <br />
                   <StagesForm
@@ -166,8 +166,9 @@ const AnnouncementForm = ({
                   />
                   <br />
                   <Button
-                    variant="danger"
+                    variant="success"
                     type="submit"
+                    size="lg"
                     block
                     className="form-margin"
                   >
