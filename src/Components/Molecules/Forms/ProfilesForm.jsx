@@ -1,25 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
-import ProfilesTable from '../Tables/ProfilesTable';
+import RequirementsForm from "./RequirementsForm";
+import ProfilesTable from "../Tables/ProfilesTable";
 
-const INITIAL_FORM_PROFILE = { name: '', description: '', area: '' };
+const INITIAL_FORM_PROFILE = {
+  name: "",
+  description: "",
+  area: "",
+  requirements: []
+};
 
 const ProfilesForm = ({ formAnnouncement, setFormAnnouncement }) => {
   const [formProfiles, setFormProfiles] = useState(INITIAL_FORM_PROFILE);
   const [profiles, setProfiles] = useState([]);
 
-  const handleChangeProfiles = (e) => {
+  const handleChangeProfiles = e => {
     setFormProfiles({
       ...formProfiles,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
+    //console.log(formProfiles);
   };
 
-  const handleSubmitProfiles = (e) => {
+  const handleSubmitProfiles = e => {
     e.preventDefault();
 
     if (formProfiles.name) {
@@ -28,15 +35,16 @@ const ProfilesForm = ({ formAnnouncement, setFormAnnouncement }) => {
 
       setFormAnnouncement({
         ...formAnnouncement,
-        profiles: profilesTemp,
+        profiles: profilesTemp
       });
 
       setFormProfiles(INITIAL_FORM_PROFILE);
+      //console.log(profiles);
     }
   };
 
   function deleteProfile(profile) {
-    setProfiles(profiles.filter((el) => el.name !== profile.name));
+    setProfiles(profiles.filter(el => el.name !== profile.name));
   }
 
   return (
@@ -64,7 +72,7 @@ const ProfilesForm = ({ formAnnouncement, setFormAnnouncement }) => {
             placeholder="Área del perfil"
           />
           <br />
-          <Form.Label className="labels">Descripción y requisitos</Form.Label>
+          <Form.Label className="labels">Descripción</Form.Label>
           <Form.Control
             name="description"
             onChange={handleChangeProfiles}
@@ -72,13 +80,16 @@ const ProfilesForm = ({ formAnnouncement, setFormAnnouncement }) => {
             as="textarea"
             rows="3"
             required
-            placeholder="Descripción y requisitos del perfil"
+            placeholder="Descripción del perfil"
           />
         </Form.Group>
       </Form.Row>
-      <Button variant="danger" onClick={handleSubmitProfiles}>
+      <RequirementsForm form={formProfiles} setForm={setFormProfiles} />
+      <br />
+      <Button block variant="outline-danger" onClick={handleSubmitProfiles}>
         Agregar perfil
       </Button>
+      <br />
       {Array.isArray(profiles) && profiles.length > 0 && (
         <ProfilesTable profiles={profiles} deleteProfile={deleteProfile} />
       )}

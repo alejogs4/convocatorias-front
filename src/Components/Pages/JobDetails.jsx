@@ -3,17 +3,28 @@ import Axios from "axios";
 
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
-import ListGroup from "react-bootstrap/ListGroup";
 
+import JobProfilesTable from "../Molecules/Tables/JobProfilesTable";
 import StagesTable from "../Molecules/Tables/StagesTable";
 
 import "../Styles/Jobs.css";
 
+import { useUser } from "../../state/user";
 import { getNaturalFormat } from "../../utils/dates";
 import jobs from "../../utils/petitions/jobs.petitions";
 
 function JobDetails({ match: { params } }) {
   const [job, setJob] = useState(null);
+  const user = useUser();
+
+  const INITIAL_CANDIDATES = {
+    teacher_id: user.id,
+    job_id: params.id,
+    profiles: []
+  };
+
+  const [candidates, setCandidates] = useState(INITIAL_CANDIDATES);
+  const [applyProfiles, setApplyProfiles] = useState([]);
 
   const [types, setTypes] = useState([]);
   const [stages, setStages] = useState([]);
@@ -45,7 +56,9 @@ function JobDetails({ match: { params } }) {
   }, []);
 
   function returnByParameter(parameter) {
-    if (job !== null) return job[parameter];
+    if (job !== null && job !== undefined) {
+      return job[parameter];
+    }
   }
 
   function returnByList(parameter) {
@@ -68,8 +81,28 @@ function JobDetails({ match: { params } }) {
 
   const click = e => {
     //console.log(types.find((type) => type.id == 1));
-    console.log(job);
+    setCandidates({ ...candidates, teacher_id: user.id });
+    console.log(candidates);
+    //console.log(INITIAL_CANDIDATES)
   };
+
+  function applyProfile(profile, clicked) {
+    let apply_profiles = candidates.profiles;
+    if (!clicked) {
+      apply_profiles.push(profile.id);
+      setApplyProfiles(apply_profiles);
+      setCandidates({ ...candidates, profiles: apply_profiles });
+      console.log(candidates);
+    } else {
+      apply_profiles = apply_profiles.filter(el => el !== profile.id);
+      console.log("--------------");
+      console.log(apply_profiles.filter(el => el !== profile.id));
+      console.log("--------------");
+      setApplyProfiles(apply_profiles);
+      setCandidates({ ...candidates, profiles: apply_profiles });
+      console.log(candidates);
+    }
+  }
 
   return (
     <Container>
@@ -98,14 +131,14 @@ function JobDetails({ match: { params } }) {
         <strong>Requisitos:</strong>
       </p>
       {Array.isArray(requirements) && requirements.length > 0 && (
-        <ListGroup>
+        <div>
           {requirements.map(requirement => (
-            <ListGroup.Item>
-              <strong>{requirements.indexOf(requirement) + 1}. </strong>
+            <p>
+              <strong>● </strong>
               {requirement.text}
-            </ListGroup.Item>
+            </p>
           ))}
-        </ListGroup>
+        </div>
       )}
       <hr />
       <p className="titles-2">Cronograma de las etapas: </p>
@@ -114,30 +147,20 @@ function JobDetails({ match: { params } }) {
       )}
       <hr />
       <p className="titles-2">Perfiles: </p>
-      {Array.isArray(profiles) && profiles.length > 0 && (
-        <div>
-          {profiles.map(profile => (
-            <div>
-              <p>
-                <strong>Nombre: </strong>
-                {profile.name}
-              </p>
-              <p>
-                <strong>Area: </strong>
-                {profile.area}
-              </p>
-              <p>
-                <strong>Descripción: </strong>
-                {profile.description}
-              </p>
-              <hr />
-            </div>
-          ))}
-        </div>
-      )}
-      {/* <Button onClick={click}>Pepito</Button> */}
+      <JobProfilesTable profiles={profiles} applyProfile={applyProfile} />
+      <hr />
+      <Button
+        block
+        size="lg"
+        variant={candidates.profiles.length == 0 ? "secondary" : "success"}
+        onClick={click}
+        disabled={candidates.profiles.length == 0}
+      >
+        Aplicar a convocatoria
+      </Button>
+      <br />
+      <p>{JSON.stringify(candidates)}</p>
     </Container>
-    // <p>{JSON.stringify(job)}</p>
   );
 }
 
