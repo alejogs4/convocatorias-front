@@ -24,7 +24,7 @@ const jobs = {
     return jobPetitions
       .get("jobs", { headers: { ...HEADERS, authorization: token } })
       .then(response => response.data.data.opportunities);
-  },
+  }
 };
 
 export default jobs;

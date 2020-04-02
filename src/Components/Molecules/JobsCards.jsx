@@ -45,9 +45,14 @@ function JobsCards({ opportunities }) {
                       </Button>
                     </Card.Link>
                     {user.is_boss && (
-                      <Button variant="outline-info" size="sm">
-                        Aspirantes inscritos
-                      </Button>
+                      <Card.Link
+                        as={NavLink}
+                        to={`/aspirantes/convocatoria/${opportunity.id}`}
+                      >
+                        <Button variant="outline-info" size="sm">
+                          Aspirantes inscritos
+                        </Button>
+                      </Card.Link>
                     )}
                   </Col>
                   <Col>
