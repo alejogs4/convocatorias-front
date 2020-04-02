@@ -9,10 +9,10 @@ const ProfilesTable = ({ profiles, applyProfile }) => {
     const classList = e.target.classList
     if (classList.contains("btn-outline-danger")) {
       classList.remove("btn-outline-danger");
-      classList.add("btn-danger");
+      classList.add("btn-secondary");
       applyProfile(profile, false);
-    } else if (classList.contains("btn-danger")) {
-      classList.remove("btn-danger")
+    } else if (classList.contains("btn-secondary")) {
+      classList.remove("btn-secondary")
       classList.add("btn-outline-danger")
       applyProfile(profile, true);
     }
