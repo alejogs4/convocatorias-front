@@ -66,11 +66,11 @@ function JobsCards({ opportunities }) {
                         )
                       </label>
                     )}
-                    {differenceInCalendarDays(closeDate, new Date()) == 0 && (
+                    {differenceInCalendarDays(closeDate, new Date()) === 0 && (
                       <label>
                         Cierra el{" "}
                         <strong>{getNaturalFormat(closeDate)} </strong>(
-                        <em>
+                        <em className="text-info">
                           HOY
                         </em>
                         )
@@ -80,7 +80,7 @@ function JobsCards({ opportunities }) {
                       <label>
                         Cierra el{" "}
                         <strong>{getNaturalFormat(closeDate)} </strong>(
-                        <em>
+                        <em className="text-danger">
                           CERRADA
                         </em>
                         )

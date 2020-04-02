@@ -5,7 +5,7 @@ import Table from "react-bootstrap/Table";
 
 import { DEFAULT_STAGES } from "../../../utils/stages";
 
-const StagesForm = ({ formAnnouncement, setFormAnnouncement }) => {
+const StagesForm = ({ formAnnouncement, setFormAnnouncement, minDate, maxDate }) => {
   const [stages, setStages] = useState(DEFAULT_STAGES);
 
   const changeInitialDate = stage => e => {
@@ -53,6 +53,8 @@ const StagesForm = ({ formAnnouncement, setFormAnnouncement }) => {
                     name="initial_date"
                     onChange={changeInitialDate(stage)}
                     type="date"
+                    min={minDate}
+                    max={maxDate}
                     placeholder="Fecha de inicio"
                     required
                   />
@@ -61,6 +63,8 @@ const StagesForm = ({ formAnnouncement, setFormAnnouncement }) => {
                   <Form.Control
                     name="final_date"
                     onChange={changeFinalDate(stage)}
+                    min={minDate}
+                    max={maxDate}
                     type="date"
                     placeholder="Fecha de fin"
                     required

@@ -24,6 +24,7 @@ const AnnouncementForm = ({
   // setProfiles
 }) => {
   const [types, setTypes] = useState([]);
+  const fechaActual = new Date()
 
   useEffect(() => {
     jobs
@@ -35,7 +36,6 @@ const AnnouncementForm = ({
   return (
     <Container>
       <Row>
-        <Col />
         <Col
           lg
           mx="auto"
@@ -129,6 +129,7 @@ const AnnouncementForm = ({
                         onChange={onChangeAnnouncement}
                         value={formAnnouncement.begin_date}
                         type="date"
+                        min={fechaActual.toISOString().split("T")[0]}
                         placeholder="Inicio de convocatoria"
                         required
                       />
@@ -142,6 +143,7 @@ const AnnouncementForm = ({
                         name="final_date"
                         onChange={onChangeAnnouncement}
                         value={formAnnouncement.final_date}
+                        min={formAnnouncement.begin_date}
                         type="date"
                         placeholder="Fin de convocatoria"
                         required
@@ -156,6 +158,8 @@ const AnnouncementForm = ({
                   <StagesForm
                     formAnnouncement={formAnnouncement}
                     setFormAnnouncement={setFormAnnouncement}
+                    minDate={formAnnouncement.begin_date}
+                    maxDate={formAnnouncement.final_date}
                   />
                   <br />
                   <ProfilesForm
@@ -187,7 +191,6 @@ const AnnouncementForm = ({
             </Card.Body>
           </Card>
         </Col>
-        <Col />
       </Row>
     </Container>
   );
