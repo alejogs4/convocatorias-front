@@ -56,11 +56,36 @@ function JobsCards({ opportunities }) {
                     )}
                   </Col>
                   <Col>
-                    Cierra el <strong>{getNaturalFormat(closeDate)} </strong>(
-                    <em>
-                      {differenceInCalendarDays(closeDate, creationDate)} dias
-                    </em>
-                    )
+                    {differenceInCalendarDays(closeDate, new Date()) > 0 && (
+                      <label>
+                        Cierra el{" "}
+                        <strong>{getNaturalFormat(closeDate)} </strong>(
+                        <em>
+                          {differenceInCalendarDays(closeDate, new Date())} dias
+                        </em>
+                        )
+                      </label>
+                    )}
+                    {differenceInCalendarDays(closeDate, new Date()) == 0 && (
+                      <label>
+                        Cierra el{" "}
+                        <strong>{getNaturalFormat(closeDate)} </strong>(
+                        <em>
+                          HOY
+                        </em>
+                        )
+                      </label>
+                    )}
+                    {differenceInCalendarDays(closeDate, new Date()) < 0 && (
+                      <label>
+                        Cierra el{" "}
+                        <strong>{getNaturalFormat(closeDate)} </strong>(
+                        <em>
+                          CERRADA
+                        </em>
+                        )
+                      </label>
+                    )}
                   </Col>
                 </Row>
               </Card.Footer>
