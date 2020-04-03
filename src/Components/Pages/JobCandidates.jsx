@@ -41,7 +41,6 @@ const JobCandidates = ({ match: { params } }) => {
           </tbody>
         </Table>
       )}
-      <p>{JSON.stringify(candidatesList)}</p>
     </Container>
   );
 };

@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from "react";
-import Axios from "axios";
+import React, { useState, useEffect } from 'react';
+import Axios from 'axios';
 
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
-import Button from "react-bootstrap/Button";
-import Alert from "react-bootstrap/Alert";
-import Container from "react-bootstrap/Container";
+import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
+import Container from 'react-bootstrap/Container';
 
-import JobProfilesTable from "../Molecules/Tables/JobProfilesTable";
-import StagesTable from "../Molecules/Tables/StagesTable";
+import JobProfilesTable from '../Molecules/Tables/JobProfilesTable';
+import StagesTable from '../Molecules/Tables/StagesTable';
 
-import "../Styles/Jobs.css";
+import '../Styles/Jobs.css';
 
-import useForm from "../Hooks/useForm";
-import { getNaturalFormat } from "../../utils/dates";
+import useForm from '../Hooks/useForm';
+import { getNaturalFormat } from '../../utils/dates';
 
-import jobs from "../../utils/petitions/jobs.petitions";
-import { default as candidatesPetitions } from "../../utils/petitions/candidates.petitions";
+import jobs from '../../utils/petitions/jobs.petitions';
+import { default as candidatesPetitions } from '../../utils/petitions/candidates.petitions';
 
 function JobDetails({ match: { params } }) {
   const history = useHistory();
@@ -26,7 +26,7 @@ function JobDetails({ match: { params } }) {
 
   const INITIAL_CANDIDATE = {
     job_id: params.id,
-    profiles: []
+    profiles: [],
   };
 
   const [candidate, setCandidate] = useState(INITIAL_CANDIDATE);
@@ -40,7 +40,7 @@ function JobDetails({ match: { params } }) {
     jobs
       .getTypes()
       .then(setTypes)
-      .catch(error => console.log(error.message));
+      .catch((error) => console.log(error.message));
   }, []);
 
   useState(() => {
@@ -60,7 +60,7 @@ function JobDetails({ match: { params } }) {
     getJobById();
   }, []);
 
-  const handleApplyClick = e => {
+  const handleApplyClick = (e) => {
     e.preventDefault();
     form.updatePetitionState({ loading: true });
 
@@ -73,25 +73,23 @@ function JobDetails({ match: { params } }) {
 
         setTimeout(() => {
           form.resetFormState();
-          history.push("/");
+          history.push('/');
         }, 2000);
       })
-      .catch(error => {
+      .catch((error) => {
         form.updatePetitionState({
           loading: false,
-          error: "Error aplicando a convocatoria"
+          error: 'Error aplicando a convocatoria',
         });
         console.log(error.message);
       });
-    //console.log(types.find((type) => type.id == 1));
+    // console.log(types.find((type) => type.id == 1));
     console.log(candidate);
-    //console.log(INITIAL_CANDIDATES)
+    // console.log(INITIAL_CANDIDATES)
   };
 
   function returnByParameter(parameter) {
-    if (job !== null && job !== undefined) {
-      return job[parameter];
-    }
+    return job ? job[parameter] : '';
   }
 
   function returnByDate(parameter) {
@@ -103,42 +101,34 @@ function JobDetails({ match: { params } }) {
   }
 
   function applyProfile(profile, clicked) {
-    let apply_profiles = candidate.profiles;
     if (!clicked) {
-      apply_profiles.push(profile.id);
-      setCandidate({ ...candidate, profiles: apply_profiles });
-      console.log(candidate);
+      setCandidate({ ...candidate, profiles: [...candidate.profiles, profile.id] });
     } else {
-      apply_profiles = apply_profiles.filter(el => el !== profile.id);
-      console.log("--------------");
-      console.log(apply_profiles.filter(el => el !== profile.id));
-      console.log("--------------");
-      setCandidate({ ...candidate, profiles: apply_profiles });
-      console.log(candidate);
+      setCandidate({ ...candidate, profiles: candidate.profiles.filter((el) => el !== profile.id) });
     }
   }
 
-  return (
+  return job && (
     <Container>
-      <p className="titles">{returnByParameter("name")}</p>
-      <p>{returnByParameter("description")}</p>
+      <p className="titles">{returnByParameter('name')}</p>
+      <p>{returnByParameter('description')}</p>
       <hr />
       <p>
         <strong>Tipo de convocatoria: </strong>
-        {types.length > 0 &&
-          types.find(type => type.id == returnByParameter("job_type_id")).text}
+        {types.length > 0
+          && types.find((type) => type.id == returnByParameter('job_type_id')).text}
       </p>
       <p>
         <strong>Programa: </strong>
-        {returnByParameter("program")}
+        {returnByParameter('program')}
       </p>
       <p>
         <strong>Fecha de inicio: </strong>
-        {returnByDate("begin_date")}
+        {returnByDate('begin_date')}
       </p>
       <p>
         <strong>Fecha de fin: </strong>
-        {returnByDate("final_date")}
+        {returnByDate('final_date')}
       </p>
       <hr />
       <p>
@@ -146,7 +136,7 @@ function JobDetails({ match: { params } }) {
       </p>
       {Array.isArray(requirements) && requirements.length > 0 && (
         <div>
-          {requirements.map(requirement => (
+          {requirements.map((requirement) => (
             <p>
               <strong>● </strong>
               {requirement.text}
@@ -167,13 +157,13 @@ function JobDetails({ match: { params } }) {
       <Button
         block
         size="lg"
-        variant={candidate.profiles.length == 0 ? "secondary" : "success"}
+        variant={candidate.profiles.length === 0 ? 'secondary' : 'success'}
         onClick={handleApplyClick}
-        disabled={candidate.profiles.length == 0}
+        disabled={candidate.profiles.length === 0}
       >
         {!form.petitionState.loading
-          ? "Aplicar a convocatoria"
-          : "Aplicando ..."}
+          ? 'Aplicar a convocatoria'
+          : 'Aplicando ...'}
       </Button>
       {form.petitionState.error && (
         <Alert variant="danger">{form.petitionState.error}</Alert>
