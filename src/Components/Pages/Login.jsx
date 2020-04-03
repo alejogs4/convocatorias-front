@@ -63,10 +63,10 @@ const Login = () => {
         localStorage.setItem('udemuser', JSON.stringify(user));
         localStorage.setItem('token', token);
         userDispatch({ type: LOGIN, payload: user });
-        return curriculum.getCurriculum();
-      })
-      .then(({ curriculum }) => {
-        curriculumDispatch({ type: REGISTER_CV, payload: curriculum });
+        curriculum.getCurriculum()
+          .then(({ curriculum }) => curriculumDispatch({ type: REGISTER_CV, payload: curriculum }))
+          .catch((err) => console.log(err.message));
+
         history.push('/');
       })
       .catch(() => {
@@ -106,8 +106,8 @@ const Login = () => {
                         .
                       </>
                     ) : (
-                      <>Te has registrado con exito</>
-                    )}
+                        <>Te has registrado con exito</>
+                      )}
                   </Alert>
                   <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="formBasicEmail">
