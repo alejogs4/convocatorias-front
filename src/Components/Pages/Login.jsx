@@ -14,6 +14,8 @@ import prometeo from '../../Images/prometeo.jpg';
 import useForm from '../Hooks/useForm';
 import auth from '../../utils/petitions/auth.petitions';
 import { useUserDispatch, LOGIN } from '../../state/user';
+import { useCurriculumDispatch, REGISTER_CV } from '../../state/curriculum';
+import curriculum from '../../utils/petitions/curriculum.petitions';
 
 const sectionStyle = {
   width: '100%',
@@ -36,6 +38,7 @@ const Login = () => {
   const form = useForm();
   const history = useHistory();
   const userDispatch = useUserDispatch();
+  const curriculumDispatch = useCurriculumDispatch();
 
   useEffect(() => {
     setCameFromRegistry(window.location.href.includes('?success'));
@@ -60,6 +63,10 @@ const Login = () => {
         localStorage.setItem('udemuser', JSON.stringify(user));
         localStorage.setItem('token', token);
         userDispatch({ type: LOGIN, payload: user });
+        return curriculum.getCurriculum();
+      })
+      .then(({ curriculum }) => {
+        curriculumDispatch({ type: REGISTER_CV, payload: curriculum });
         history.push('/');
       })
       .catch(() => {
