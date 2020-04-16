@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
-
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
@@ -13,6 +12,7 @@ import StagesTable from "../Molecules/Tables/StagesTable";
 import "../Styles/Jobs.css";
 
 import { useUser } from "../../state/user";
+import { useCurriculum } from "../../state/curriculum";
 import useForm from "../Hooks/useForm";
 import { getNaturalFormat } from "../../utils/dates";
 
@@ -21,6 +21,7 @@ import { default as candidatesPetitions } from "../../utils/petitions/candidates
 
 function JobDetails({ match: { params } }) {
   const history = useHistory();
+  const hasCurriculum = useCurriculum();
   const form = useForm();
   const user = useUser();
 
@@ -28,7 +29,7 @@ function JobDetails({ match: { params } }) {
 
   const INITIAL_CANDIDATE = {
     job_id: params.id,
-    profiles: []
+    profiles: [],
   };
 
   const [candidate, setCandidate] = useState(INITIAL_CANDIDATE);
@@ -42,7 +43,7 @@ function JobDetails({ match: { params } }) {
     jobs
       .getTypes()
       .then(setTypes)
-      .catch(error => console.log(error.message));
+      .catch((error) => console.log(error.message));
   }, []);
 
   useState(() => {
@@ -62,7 +63,7 @@ function JobDetails({ match: { params } }) {
     getJobById();
   }, []);
 
-  const handleApplyClick = e => {
+  const handleApplyClick = (e) => {
     e.preventDefault();
     form.updatePetitionState({ loading: true });
 
@@ -78,10 +79,10 @@ function JobDetails({ match: { params } }) {
           history.push("/");
         }, 2000);
       })
-      .catch(error => {
+      .catch((error) => {
         form.updatePetitionState({
           loading: false,
-          error: "Error aplicando a convocatoria"
+          error: "Error aplicando a convocatoria",
         });
         console.log(error.message);
       });
@@ -106,12 +107,12 @@ function JobDetails({ match: { params } }) {
     if (!clicked) {
       setCandidate({
         ...candidate,
-        profiles: [...candidate.profiles, profile.id]
+        profiles: [...candidate.profiles, profile.id],
       });
     } else {
       setCandidate({
         ...candidate,
-        profiles: candidate.profiles.filter(el => el !== profile.id)
+        profiles: candidate.profiles.filter((el) => el !== profile.id),
       });
     }
   }
@@ -125,7 +126,7 @@ function JobDetails({ match: { params } }) {
         <p>
           <strong>Tipo de convocatoria: </strong>
           {types.length > 0 &&
-            types.find(type => type.id == returnByParameter("job_type_id"))
+            types.find((type) => type.id == returnByParameter("job_type_id"))
               .text}
         </p>
         <p>
@@ -146,7 +147,7 @@ function JobDetails({ match: { params } }) {
         </p>
         {Array.isArray(requirements) && requirements.length > 0 && (
           <div>
-            {requirements.map(requirement => (
+            {requirements.map((requirement) => (
               <p>
                 <strong>● </strong>
                 {requirement.text}
@@ -161,10 +162,12 @@ function JobDetails({ match: { params } }) {
         )}
         <hr />
         <p className="titles-2">Perfiles: </p>
-        <JobProfilesTable profiles={profiles} applyProfile={!user.is_boss ? applyProfile : ''} />
+        <JobProfilesTable
+          profiles={profiles}
+          applyProfile={!user.is_boss && hasCurriculum.id ? applyProfile : ""}
+        />
         <hr />
-
-        {!user.is_boss && (
+        {!user.is_boss && hasCurriculum.id && (
           <Button
             block
             size="lg"
@@ -176,6 +179,12 @@ function JobDetails({ match: { params } }) {
               ? "Aplicar a convocatoria"
               : "Aplicando ..."}
           </Button>
+        )}
+        {!hasCurriculum.id && (
+          <Alert variant="info">
+            Para poder aplicar a las convocatorias debes{" "}
+            <Alert.Link as={Link} to="/curriculum">registrar tu hoja de vida.</Alert.Link>
+          </Alert>
         )}
         {form.petitionState.error && (
           <Alert variant="danger">{form.petitionState.error}</Alert>
