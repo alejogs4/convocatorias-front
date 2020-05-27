@@ -32,6 +32,9 @@ function UserInformation({ user }) {
           {user.email}
         </Card.Text>
 
+        <Card.Link as={NavLink} to="/profile">
+          <strong><u>Editar perfil</u></strong>
+        </Card.Link>
         <Card.Link as={NavLink} to="/login" onClick={auth.logout}>
           <Button className="mt-5" block variant="outline-danger" size="sm">
             Cerrar sesión
