@@ -15,7 +15,6 @@ function Jobs() {
         <Col>
           <h2 className="jobs-header margin-bt">Convocatorias abiertas</h2>
         </Col>
-        <Col></Col>
       </Row>
       <Row className="home-jobs-container">
         <Col sm={12} lg={!user.id ? 12 : 8}>
