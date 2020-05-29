@@ -1,3 +1,4 @@
+# SISTEMA DE GESTIÓN DE CONVOCATORIAS PARA DOCENTES DE CÁTEDRA Y PTC
 Proyecto de gestión de convocatorias para docentes desarrollado para la asignatura de Ingeniería de Software IV, en el cuál trabajamos el desarrollo mediante las metodologías ágiles (SCRUM) la primera parte del semestre; se realizaron 5 sprints de 1 semana, en los cuales desarrollamos 7 historias de usuario que correspondían al mínimo producto viable. Se puede encontrar más detalle de éste proceso ágil en el siguiente tablero de trello: https://trello.com/b/b37jk8TY/sistema-de-convocatorias-docentes-de-c%C3%A1tedra-y-ptc.
 
 La segunda parte del semestre se trabajó con metodologías tradicionales y se realizaron 2 historias de usuario.
