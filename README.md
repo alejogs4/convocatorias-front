@@ -3,7 +3,10 @@ Proyecto de gestión de convocatorias para docentes desarrollado para la asignat
 
 La segunda parte del semestre se trabajó con metodologías tradicionales y se realizaron 2 historias de usuario.
 
+*******************
+
 **Descripción:**
+
 El sistema de gestión de convocatorias docentes busca la creación de un portal para la creación de convocatorias para la contratación de docentes para el programa de ingeniería de sistemas, este portal debe permitir que la jefatura del programa y los coordinadores del programa abran convocatorias cuando un perfil en particular es solicitado y a su vez debe permitir que los posibles interesados en los puestos ahi publicados se registren en el sistema para así postularse para ser profesores del programa, el portal permitirá a los aspirantes llenar un formulario donde se registrará los datos necesarios sobre su hoja de vida y además se podrá adjuntar un archivo con esta información. Las convocatorias podrán tener diversos criterios de evaluación que indican de manera de preliminar una calificación para los aspirantes, además se permitirá indicar una fecha de cierre para la convocatoria, dando también la opción de cerrarla cuando así se considere necesario.
 
 Ya con la convocatoria hecha se le permitirá a quien la realizó revisar los perfiles de los aspirantes permitiéndole seleccionar a los aspirantes en base a la calificación obtenida con los criterios establecidos al momento de crear la convocatoria.
