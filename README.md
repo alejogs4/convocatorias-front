@@ -1,68 +1,16 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Proyecto de gestión de convocatorias para docentes desarrollado para la asignatura de Ingeniería de Software IV, en el cuál trabajamos el desarrollo mediante las metodologías ágiles (SCRUM) la primera parte del semestre; se realizaron 5 sprints de 1 semana, en los cuales desarrollamos 7 historias de usuario que correspondían al mínimo producto viable. Se puede encontrar más detalle de éste proceso ágil en el siguiente tablero de trello: https://trello.com/b/b37jk8TY/sistema-de-convocatorias-docentes-de-c%C3%A1tedra-y-ptc.
 
-## Available Scripts
+La segunda parte del semestre se trabajó con metodologías tradicionales y se realizaron 2 historias de usuario.
 
-In the project directory, you can run:
+**Descripción:**
+El sistema de gestión de convocatorias docentes busca la creación de un portal para la creación de convocatorias para la contratación de docentes para el programa de ingeniería de sistemas, este portal debe permitir que la jefatura del programa y los coordinadores del programa abran convocatorias cuando un perfil en particular es solicitado y a su vez debe permitir que los posibles interesados en los puestos ahi publicados se registren en el sistema para así postularse para ser profesores del programa, el portal permitirá a los aspirantes llenar un formulario donde se registrará los datos necesarios sobre su hoja de vida y además se podrá adjuntar un archivo con esta información. Las convocatorias podrán tener diversos criterios de evaluación que indican de manera de preliminar una calificación para los aspirantes, además se permitirá indicar una fecha de cierre para la convocatoria, dando también la opción de cerrarla cuando así se considere necesario.
 
-### `yarn start`
+Ya con la convocatoria hecha se le permitirá a quien la realizó revisar los perfiles de los aspirantes permitiéndole seleccionar a los aspirantes en base a la calificación obtenida con los criterios establecidos al momento de crear la convocatoria.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Al seleccionar a los aspirantes se les enviará una notificación informándoles si fueron seleccionados para el siguiente paso del proceso.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Con la lista de aspirantes ya seleccionada, se les podrá enviar notificaciones a cada uno de manera individual, informándoles de la hora, fecha y entrevistadores, para estas entrevistas se podrán crear criterios para evaluar a los aspirantes, donde cada uno de los entrevistadores tendrá la posibilidad de calificar al aspirante y el promedio de esas calificaciones será el indicador de desempeño del aspirante.
 
-### `yarn test`
+Ya con esta calificación realizada se puede promediar con la calificación dada por la convocatoria para de esta manera filtrar a los aspirantes y contactarlos de manera individual, para el proceso de contratación.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Cabe recalcar que hasta aquí llegan los límites del sistema, finalizando con la generación de una calificación final para un aspirante.
