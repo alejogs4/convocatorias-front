@@ -38,6 +38,13 @@ const CurriculumForm = ({
     formCurriculum.military_card = '';
     return '';
   };
+
+  async function handleFileUpload(e) {
+    if (e.target.files.length === 0) return
+    const [file] = e.target.files
+    formCurriculum.file = file
+  }
+
   return (
     <Container>
       <Form
@@ -260,6 +267,14 @@ const CurriculumForm = ({
           formCurriculum={formCurriculum}
           setFormCurriculum={setFormCurriculum}
         />
+        <hr />
+        <Form.Row>
+          <Form.Group as={Col} lg>
+            <Form.Label className="labels">Subir archivo de hoja de vida</Form.Label>
+            <br />
+            <input type="file" onChange={handleFileUpload} />
+          </Form.Group>
+        </Form.Row>
         <hr />
         <Form.Row>
           <Form.Group as={Col} lg>
