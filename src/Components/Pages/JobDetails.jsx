@@ -95,6 +95,14 @@ function JobDetails({ match: { params } }) {
     return job ? job[parameter] : "";
   }
 
+  function isClosed() {
+    if (job !== null) {
+      const finalDate = new Date(job["final_date"]);
+      const today = new Date();
+      return today > finalDate;
+    }
+  }
+
   function returnByDate(parameter) {
     if (job !== null) {
       const date = job[parameter];
@@ -164,10 +172,12 @@ function JobDetails({ match: { params } }) {
         <p className="titles-2">Perfiles: </p>
         <JobProfilesTable
           profiles={profiles}
-          applyProfile={!user.is_boss && hasCurriculum.id ? applyProfile : ""}
+          applyProfile={
+            !user.is_boss && !isClosed() && hasCurriculum.id ? applyProfile : ""
+          }
         />
         <hr />
-        {!user.is_boss && hasCurriculum.id && (
+        {!user.is_boss && !isClosed() && hasCurriculum.id && (
           <Button
             block
             size="lg"
@@ -180,10 +190,17 @@ function JobDetails({ match: { params } }) {
               : "Aplicando ..."}
           </Button>
         )}
+        {isClosed() && (
+          <Alert variant="info">
+            Esta convocatoria está <strong>cerrada.</strong>
+          </Alert>
+        )}
         {!hasCurriculum.id && (
           <Alert variant="info">
             Para poder aplicar a las convocatorias debes{" "}
-            <Alert.Link as={Link} to="/curriculum">registrar tu hoja de vida.</Alert.Link>
+            <Alert.Link as={Link} to="/curriculum">
+              registrar tu hoja de vida.
+            </Alert.Link>
           </Alert>
         )}
         {form.petitionState.error && (

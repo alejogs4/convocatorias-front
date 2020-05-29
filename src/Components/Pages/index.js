@@ -12,6 +12,7 @@ import Announcement from './Announcement';
 import Jobs from './Jobs';
 import JobDetails from './JobDetails';
 import JobCandidates from './JobCandidates';
+import Profile from './Profile';
 
 function Pages() {
   return (
@@ -26,6 +27,7 @@ function Pages() {
         <Route exact path="/announcement" component={Announcement} />
         <Route exact path="/convocatoria/:id" component={JobDetails} />
         <Route exact path="/aspirantes/convocatoria/:id" component={JobCandidates} />
+        <Route exact path="/profile" component={Profile} />
       </Switch>
     </Router>
   );
